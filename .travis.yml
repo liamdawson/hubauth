@@ -1,0 +1,43 @@
+language: rust
+cache:
+- cargo
+- bundler
+- apt
+rust:
+- stable
+- beta
+- nightly
+matrix:
+  allow_failures:
+  - rust: nightly
+  fast_finish: true
+install:
+- rustup component add clippy
+- rustup component add rustfmt
+- gem install ronn-ng
+- bash -c 'command -v cargo-deb >/dev/null || cargo install cargo-deb'
+- bash -c 'command -v cargo-rpm >/dev/null || cargo install cargo-rpm'
+script:
+- bash ./scripts/test
+jobs:
+  include:
+  - stage: "Build it!"
+    script: ./scripts/mkall
+  - stage: "Ship it!"
+    script: skip
+    if: tag IS present
+    rust: stable
+    on:
+      tags: true
+      repo: liamdawson/hubauth
+    deploy:
+    - provider: releases
+      on:
+        tags: true
+        repo: liamdawson/hubauth
+      api_key:
+        secure: FM8EEfg49TGvYnAhaMUREIMuhLhGrkebYmZ1oLhDYj5I5OW+Ih25JSohN7KVkpn/X/M9peb1M9F3MjvLsA407bWXsG/sOadYyT+oaP5grARm2WIJOrl3+GsVuxOI5L2aLTG/7qmPISK9/VrbV3fQPzB9EXzw5K4s1jS0GmG4da9I3dTP6fTGFyibA0MLPdDQaMRyj0S249Z5iXF7DVKLzmzzZ+kjlAoQBUQg6hcIY830ZGpXqFnPltqs3AWYPNecP9EaTGv9F4uJAcVsd7eGz0XuOKp4Y/gQQjpA+q2++/lTRmdXzgRqN0a58Vq68s14RMUQpLM4Q6N/gl2GEmMlk2Z0bks6pT2FxCNncKTdCNCPwwL0Y0LdO0nDh0htThVAJhs4aPLUP2HoIHJkpuKpABNGzZVjA5k0dmAOej/Rg4kuBE8jROx0KvLb6oec3LHO/xVp8Atdc6MwGGnFJ99Sb3zbtklISZAs8i10kCRAYDVPd8TVcZrtqrS3N3wnl+N983BGUwJ/ehfTTekIM0qARRUJT47++S34PSMKm9LR7ln1qX7Bajmm1ooEjcSiN9b4p3wN7mNxGh8yHZAoJFYlrSR7nF4/nnVJOEKVZNfnXI+YEBXJW2NoFpB1LOfYLpq2ssXsHRGcIs+pei9fPlteZ8HmO10B0mHK7igy++OLMFw=
+      skip_cleanup: true
+      file_glob: true
+      file:
+      - release/*

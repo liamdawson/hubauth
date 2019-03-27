@@ -1,0 +1,60 @@
+[package]
+name = "hubauth"
+version = "0.190327.0"
+license = "MIT OR Apache-2.0"
+authors = ["Liam Dawson <liam@ldaws.com>"]
+edition = "2018"
+description = "Dynamically use remote sources for SSH user's authorized_keys, handling network unavailability via caching."
+homepage = ""
+repository = "https://github.com/liamdawson/hubauth"
+readme = "README.md"
+keywords = ["ssh", "cli", "authorized_keys"]
+categories = ["command-line-utilities"]
+
+[dependencies]
+config = { version = "0.9", default-features = false, features = ["yaml"]}
+sha2 = "0.8"
+serde = { version = "1.0", features = ["derive"] }
+regex = "1.1"
+reqwest = "0.9"
+retry = "0.4"
+rayon = "1.0"
+structopt = "0.2"
+
+[dev-dependencies]
+mockito = "0.16"
+
+[badges]
+travis-ci = { repository = "liamdawson/hubauth" }
+is-it-maintained-issue-resolution = { repository = "liamdawson/hubauth" }
+is-it-maintained-open-issues = { repository = "liamdawson/hubauth" }
+maintenance = { status = "experimental" }
+
+[package.metadata.deb]
+section = "net"
+maintainer-scripts = "scripts/debian"
+assets = [
+    ["target/release/hubauth", "usr/bin/", "755"],
+    ["target/release/doc/*.html", "usr/share/doc/hubauth/", "644"],
+    ["target/release/doc/*.example", "usr/share/doc/hubauth/", "644"],
+    ["target/release/doc/readme", "usr/share/doc/hubauth/", "644"],
+    ["target/release/doc/changelog", "usr/share/doc/hubauth/", "644"],
+    ["target/release/doc/*.1", "usr/share/man/man1/", "644"],
+    ["target/release/doc/*.5", "usr/share/man/man5/", "644"]
+]
+
+[package.metadata.rpm.cargo]
+buildflags = ["--release"]
+
+[package.metadata.rpm.targets]
+hubauth = { path = "/usr/bin/hubauth" }
+
+[package.metadata.rpm.files]
+"doc/changelog" = { path = "/usr/share/doc/hubauth/changelog" }
+"doc/readme" = { path = "/usr/share/doc/hubauth/readme" }
+"doc/hubauth.1.html" = { path = "/usr/share/doc/hubauth/hubauth.1.html" }
+"doc/hubauth.yml.5.html" = { path = "/usr/share/doc/hubauth/hubauth.yml.5.html" }
+"doc/hubauth.yml.example" = { path = "/usr/share/doc/hubauth/hubauth.yml.example" }
+"doc/hubauth.yml" = { path = "/etc/hubauth.yml" }
+"doc/hubauth.1" = { path = "/usr/share/man/man1/hubauth.1" }
+"doc/hubauth.yml.5" = { path = "/usr/share/man/man5/hubauth.yml.5" }

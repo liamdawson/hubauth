@@ -1,0 +1,83 @@
+hubauth.yml(5) -- hubauth configuration file
+============================================
+
+DESCRIPTION
+-----------
+
+hubauth(1) reads configuration data from `/etc/hubauth.yml` (or the file specified with `-c`|`--config-file` on the command line). The file is a YAML formatted file.
+
+The possible keys and their members are as follows (note that keys and values are case sensitive):
+
+* `caching`
+
+  Controls the settings involving the caching of key results.
+
+* `caching.destination`
+
+  Sets the destination for cached key results. Defaults to `/var/cache/hubauth`.
+
+* `caching.min_age`
+
+  Sets a minimum age (in seconds) for a cached entry before `list` will attempt to refresh the keys. Defaults to 15.
+
+* `caching.max_age`
+
+  Sets a maximum age (in seconds) for a cached entry before `list` and `cached` will ignore it as stale. Defaults to 86400 (1 day).
+
+* `users`
+
+  Map users to SSH sources, and optionally disable caching.
+
+* `users.<username>`
+
+  Map a single user's sources and cache usages.
+
+* `users.<username>.cache`
+
+  Indicate whether a user should use key caching. Defaults to `true`.
+
+* `users.<username>.key_sources`
+
+  Map key sources for this user.
+
+* `users.<username>.key_sources[].url`
+
+  Download keys from a specified url.
+
+* `users.<username>.key_sources[].github`
+
+  Download keys for a specified GitHub user, as publicly available at `https://github.com/<username>.keys`
+
+EXAMPLES
+--------
+
+Allow `liamdawson` to log in using the SSH key for `liamdawson` on GitHub
+
+```
+users:
+  liamdawson:
+    key_sources:
+    - github: liamdawson
+```
+
+Allow `root` to log in using the SSH key from a fake domain, and disable key caching
+
+```
+users:
+  root:
+    cache: false
+    key_sources:
+    - url: "https://example.com/fake.keys"
+```
+
+FILES
+-----
+
+* `/etc/hubauth.yml`
+
+  Contains the default configuration for hubauth(1).
+
+SEE ALSO
+--------
+
+hubauth(1)

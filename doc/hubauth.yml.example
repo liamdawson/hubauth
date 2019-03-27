@@ -1,0 +1,14 @@
+# yaml file: indentation is important.
+
+caching:
+#  destination: "/var/cache/hubauth"
+#  min_age: 15
+#  max_age: 86400
+users:
+#  liamdawson:
+#    key_sources:
+#    - github: liamdawson
+#  root:
+#    cache: false
+#    key_sources:
+#    - url: "https://example.invalid/root.keys"

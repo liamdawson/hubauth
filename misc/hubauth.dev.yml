@@ -1,0 +1,15 @@
+caching:
+  destination: "misc/cache"
+  min_age: 15
+  max_age: 86400
+users:
+  liamdawson:
+    key_sources:
+    - url: "https://github.com/liamdawson.keys"
+  liamdawson2:
+    key_sources:
+    - github: liamdawson
+  example_user:
+    cache: false
+    key_sources:
+    - url: "https://google.com"

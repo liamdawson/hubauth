@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -eu
+
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )"
+
+mkdir -p "${ROOT_DIR}/release/"
+cd "${ROOT_DIR}/release/"
+
+"${ROOT_DIR}/scripts/mkdoc"
+(cd "$ROOT_DIR" && cargo build --release)
+"${ROOT_DIR}/scripts/mkdeb"
+cp "${ROOT_DIR}/target/debian/"*.deb .
+"${ROOT_DIR}/scripts/mkrpm"
+cp "${ROOT_DIR}/target/release/rpmbuild/RPMS/x86_64/"*.rpm .
+VERSION="$(find "${ROOT_DIR}/release/" -name '*.deb' | awk -F'_' '{ print $2; }')"
+"${ROOT_DIR}/scripts/mktar" "$VERSION"

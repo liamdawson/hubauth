@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -eu
+
+if command -v adduser >/dev/null; then
+  adduser --quiet --system --no-create-home hubauth
+else
+  /usr/bin/getent passwd hubauth > /dev/null || /usr/sbin/useradd -r -d /var/cache/hubauth -s /sbin/nologin -g nobody hubauth
+fi
+
+if [[ ! -f "etc/hubauth.yml" ]]; then
+    cp "usr/share/doc/hubauth/hubauth.yml.example" "etc/hubauth.yml"
+    chown hubauth "etc/hubauth.yml"
+    chmod 600 "etc/hubauth.yml"
+fi
+
+if [[ ! -d "var/cache/hubauth" ]]; then
+  mkdir -p "var/cache/hubauth"
+  chown hubauth "var/cache/hubauth"
+  chmod 2700 "var/cache/hubauth"
+fi
