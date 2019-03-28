@@ -12,7 +12,7 @@ matrix:
   - rust: nightly
   fast_finish: true
 install:
-- apt-get install -y ruby ruby-dev groff rpm rpmlint rubygems build-essential jq bzip2 make
+- sudo apt-get install -y ruby ruby-dev groff rpm rpmlint build-essential jq bzip2 make
 - rustup component add clippy
 - rustup component add rustfmt
 - gem install ronn-ng fpm
