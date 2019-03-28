@@ -7,17 +7,30 @@ matrix:
   allow_failures:
   - rust: nightly
   fast_finish: true
-install:
-- rustup component add clippy
-- rustup component add rustfmt
-- gem install ronn-ng fpm
-script:
-- bash ./scripts/test
+
+stages:
+- lint
+- test
+- build
+- deploy
+
 jobs:
   include:
-  - stage: "Build it!"
-    script: make all
-  - stage: "Ship it!"
+  - stage: lint
+    rust: stable
+    script:
+    - rustup component add clippy
+    - rustup component add rustfmt
+    - cargo fmt --all -- --check
+    - cargo clippy -- --all -D warnings
+  - stage: test
+    script: cargo test --verbose --all
+  - stage: build
+    rust: stable
+    script:
+    - gem install ronn-ng fpm
+    - make all
+  - stage: deploy
     script: skip
     if: tag IS present
     rust: stable
