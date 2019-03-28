@@ -22,7 +22,7 @@ jobs:
     - rustup component add clippy
     - rustup component add rustfmt
     - cargo fmt --all -- --check
-    - cargo clippy --all -- -D warnings
+    - cargo clippy --all-targets -- -D warnings
   - stage: test
     script: cargo test --verbose --all
   - stage: build
