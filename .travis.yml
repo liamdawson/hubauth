@@ -13,7 +13,7 @@ script: cargo test --verbose --all
 stages:
 - lint
 - test
-- build
+- package
 - deploy
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
     - cargo fmt --all -- --check
     - cargo clippy --all-targets -- -D warnings
   # script from above "stages" gets run here due to stage ordering
-  - stage: build
+  - stage: package
     rust: stable
     script:
     - gem install ronn-ng fpm
