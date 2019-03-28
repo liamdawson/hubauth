@@ -8,6 +8,8 @@ matrix:
   - rust: nightly
   fast_finish: true
 
+script: cargo test --verbose --all
+
 stages:
 - lint
 - test
@@ -23,8 +25,7 @@ jobs:
     - rustup component add rustfmt
     - cargo fmt --all -- --check
     - cargo clippy --all-targets -- -D warnings
-  - stage: test
-    script: cargo test --verbose --all
+  # script from above "stages" gets run here due to stage ordering
   - stage: build
     rust: stable
     script:
