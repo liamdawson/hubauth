@@ -12,11 +12,10 @@ matrix:
   - rust: nightly
   fast_finish: true
 install:
+- apt-get install -y ruby ruby-dev groff rpm rpmlint rubygems build-essential jq bzip2 make
 - rustup component add clippy
 - rustup component add rustfmt
-- gem install ronn-ng
-- bash -c 'command -v cargo-deb >/dev/null || cargo install cargo-deb'
-- bash -c 'command -v cargo-rpm >/dev/null || cargo install cargo-rpm'
+- gem install ronn-ng fpm
 script:
 - bash ./scripts/test
 jobs:

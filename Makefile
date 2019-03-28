@@ -23,11 +23,11 @@ FPM_OPTS= -s dir -v $(VERSION) -n $(PKGNAME) \
 
 DEEP_FPM_OPTS= $(FPM_OPTS) -C dist/deep \
 	--before-install scripts/preinst \
-    --directories var/cache/hubauth \
+    --directories var/cache/hubauth
 
 TAR_NAME= $(PKGNAME)-$(VERSION)-$(ARCH)
-DEB_OPTS= $(DEEP_FPM_OPTS) -t deb --deb-user "$(USER)" --no-deb-use-file-permissions --after-install scripts/postinst
-RPM_OPTS= $(DEEP_FPM_OPTS) -t rpm --rpm-user "$(USER)" --rpm-attr 2700,hubauth,hubauth:/var/cache/hubauth
+DEB_OPTS= $(DEEP_FPM_OPTS) -t deb --deb-use-file-permissions --after-install scripts/postinst
+RPM_OPTS= $(DEEP_FPM_OPTS) -t rpm --rpm-use-file-permissions --rpm-attr 2700,hubauth,hubauth:/var/cache/hubauth
 TXZ_OPTS= $(FPM_OPTS) -t tar -p "packages/$(TAR_NAME).tar"
 
 all: predist deb rpm txz
@@ -48,6 +48,7 @@ rpm: binaries docs config
 predist:
 	[ ! -d dist ] || rm -rf dist
 	mkdir -p dist/shallow dist/docs dist/deep/var/cache/hubauth
+	chmod 700 dist/deep/var/cache/hubauth
 
 docs:
 	ronn --manual="$(PKGNAME)" -o dist/docs -r5 doc/*.ronn
@@ -67,8 +68,9 @@ binaries:
 	cp target/release/hubauth dist/shallow
 	mkdir -p dist/deep/usr/bin
 	cp target/release/hubauth dist/deep/usr/bin/
-	chmod 0755 dist/shallow/hubauth dist/deep/usr/bin/hubauth
+	chmod 755 dist/shallow/hubauth dist/deep/usr/bin/hubauth
 
 config:
 	mkdir -p dist/deep/etc
 	cp doc/hubauth.yml.example dist/deep/etc/hubauth.yml
+	chmod 600 dist/deep/etc/hubauth.yml

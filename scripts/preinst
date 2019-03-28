@@ -3,7 +3,7 @@
 set -eu
 
 if command -v adduser >/dev/null; then
-  adduser --quiet --system --no-create-home hubauth
+  adduser --quiet --system --no-create-home --group hubauth
 else
   getent group hubauth >/dev/null || groupadd -r hubauth
   getent passwd hubauth >/dev/null || useradd -r -g hubauth -d /var/cache/hubauth -s /sbin/nologin -c "Runs hubauth and handles key caching" hubauth
