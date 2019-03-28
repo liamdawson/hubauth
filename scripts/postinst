@@ -1,0 +1,2 @@
+chown -R hubauth:hubauth /var/cache/hubauth
+chmod -R 2700 /var/cache/hubauth

@@ -22,7 +22,7 @@ script:
 jobs:
   include:
   - stage: "Build it!"
-    script: ./scripts/mkall
+    script: make all
   - stage: "Ship it!"
     script: skip
     if: tag IS present
@@ -40,4 +40,4 @@ jobs:
       skip_cleanup: true
       file_glob: true
       file:
-      - release/*
+      - packages/*

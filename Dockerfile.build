@@ -1,6 +1,4 @@
 FROM rust
 RUN apt-get update
-RUN apt-get install -y ruby ruby-dev groff rpm rpmlint
-RUN gem install ronn-ng
-RUN cargo install cargo-deb
-RUN cargo install cargo-rpm
+RUN apt-get install -y ruby ruby-dev groff rpm rpmlint rubygems build-essential jq bzip2 make
+RUN gem install ronn-ng fpm

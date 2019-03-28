@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )"
-
-cp -r "${ROOT_DIR}/target/release/doc" "${ROOT_DIR}/.rpm/"
-cp "${ROOT_DIR}/.rpm/doc/hubauth.yml.example" "${ROOT_DIR}/.rpm/doc/hubauth.yml"
-(cd "${ROOT_DIR}"; cargo rpm build --verbose)
