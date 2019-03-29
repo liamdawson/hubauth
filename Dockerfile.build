@@ -1,4 +1,0 @@
-FROM rust
-RUN apt-get update
-RUN apt-get install -y ruby ruby-dev groff rpm rpmlint rubygems build-essential jq bzip2 make
-RUN gem install ronn-ng fpm

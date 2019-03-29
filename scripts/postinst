@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-
-if [ "$1" = "configure" ]; then
-    chown -R hubauth:hubauth /var/cache/hubauth
-    chmod -R 2700 /var/cache/hubauth
-    chown -R hubauth:hubauth /etc/hubauth.yml
-fi
