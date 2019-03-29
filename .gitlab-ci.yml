@@ -1,0 +1,43 @@
+stages:
+- lint
+- test
+- package
+- deploy
+
+lint:clippy:
+  image: rust:latest
+  script:
+    - rustup component add clippy
+    - cargo clippy --all-targets -- -D warnings
+
+lint:fmt:
+  image: rust:latest
+  script:
+    - rustup component add rustfmt
+    - cargo fmt -- --check
+
+test:stable:
+  image: rust:latest
+  script:
+    - cargo test --verbose --all-targets
+
+test:beta:
+  image: rust:latest
+  script:
+    - rustup install beta
+    - cargo +beta test --verbose --all-targets
+
+test:nightly:
+  image: rust:latest
+  allow_failure: true
+  script:
+    - rustup install beta
+    - cargo +beta test --verbose --all-target
+
+package:tarball:
+  image: rust:latest
+  script: 'true'
+
+deploy:artifacts:
+  image: rust:latest
+  script: 'true'

@@ -29,3 +29,5 @@ Prerequisites:
 * [ ] Integration testing
 * [ ] `hubauth init` to make the `sshd_config` changes automatically
 * [ ] Debug logging
+* [ ] Cache file locking (reduce race conditions)
+* [ ] Cache clear/clean
