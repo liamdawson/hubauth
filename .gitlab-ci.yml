@@ -1,43 +1,60 @@
+---
+variables:
+  CARGO_HOME: $CI_PROJECT_DIR/.cargo
+  DEBIAN_FRONTEND: noninteractive
+
 stages:
 - lint
 - test
 - package
 - deploy
 
-lint:clippy:
+cache:
+  paths:
+    - .cargo
+    - target
+
+clippy:
+  stage: lint
   image: rust:latest
   script:
     - rustup component add clippy
     - cargo clippy --all-targets -- -D warnings
 
-lint:fmt:
+rustfmt check:
+  stage: lint
   image: rust:latest
   script:
     - rustup component add rustfmt
     - cargo fmt -- --check
 
-test:stable:
+stable:
+  stage: test
   image: rust:latest
   script:
     - cargo test --verbose --all-targets
 
-test:beta:
+beta:
+  stage: test
   image: rust:latest
   script:
     - rustup install beta
     - cargo +beta test --verbose --all-targets
 
-test:nightly:
+nightly:
+  stage: test
   image: rust:latest
   allow_failure: true
   script:
-    - rustup install beta
-    - cargo +beta test --verbose --all-target
+    - rustup install nightly
+    - cargo +nightly test --verbose --all-targets
 
-package:tarball:
+tarball:
+  stage: package
   image: rust:latest
   script: 'true'
 
-deploy:artifacts:
+artifacts:
+  stage: deploy
   image: rust:latest
   script: 'true'
