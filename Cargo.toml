@@ -1,6 +1,6 @@
 [package]
 name = "hubauth"
-version = "0.190327.0"
+version = "0.20190327.0"
 license = "MIT OR Apache-2.0"
 authors = ["Liam Dawson <liam@ldaws.com>"]
 edition = "2018"
