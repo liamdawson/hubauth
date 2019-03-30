@@ -3,7 +3,19 @@
 /release
 /dist
 /packages
+/vendor
+
+# automake
 /autom4te.cache/
 /configure
 /Makefile
+/Makefile.in
 /hubauth.spec
+/hubauth-*
+/hubauth-*.tar.xz
+/install-sh
+/missing
+/config.log
+/config.status
+/aclocal.m4
+

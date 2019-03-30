@@ -11,6 +11,10 @@ AC_CHECK_PROG(RUSTC, [rustc], [yes], [no])
 AS_IF(test x$RUSTC = xno,
     AC_MSG_ERROR([rustc is required])
 )
+AC_CHECK_PROG(CARGO_VENDOR, [cargo-vendor], [yes], [no])
+AS_IF(test x$CARGO_VENDOR = xno,
+    AC_MSG_ERROR([cargo-vendor is required])
+)
 
 dnl Release build we do.
 CARGO_TARGET_DIR=release
