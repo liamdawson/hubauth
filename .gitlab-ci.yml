@@ -62,7 +62,7 @@ dist:
   image: rust:latest
   script:
     - cargo install cargo-vendor
-    - autoconf
+    - autoreconf -si
     - ./configure
     - make dist
     - make distcheck
