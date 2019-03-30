@@ -1,15 +1,7 @@
-# yaml file: indentation is important.
-
-caching:
-#  destination: "/var/cache/hubauth"
-#  min_age: 15
-#  max_age: 86400
 users:
-  # explicitly setting no sources for root
   root:
     cache: false
     key_sources: []
 #  liamdawson:
-#    key_sources:
-#    - github: liamdawson
-#    - url: "https://example.invalid/liamdawson.keys"
+     key_sources:
+     - github: liamdawson

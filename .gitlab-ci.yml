@@ -6,6 +6,7 @@ variables:
 stages:
 - lint
 - test
+- build
 - package
 - deploy
 
@@ -48,6 +49,12 @@ nightly:
   script:
     - rustup install nightly
     - cargo +nightly test --verbose --all-targets
+
+build:
+  stage: build
+  image: rust:latest
+  script:
+    - cargo build --release
 
 tarball:
   stage: package
