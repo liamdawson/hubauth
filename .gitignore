@@ -3,3 +3,7 @@
 /release
 /dist
 /packages
+/autom4te.cache/
+/configure
+/Makefile
+/hubauth.spec
