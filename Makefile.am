@@ -18,3 +18,7 @@ clean-local:
 install-exec-local:
 	$(MKDIR_P) $(DESTDIR)$(bindir)
 	$(INSTALL) -c -m 755 target/@CARGO_TARGET_DIR@/hubauth $(DESTDIR)$(bindir)
+	$(MKDIR_P) $(DESTDIR)$(docdir)/
+	$(INSTALL) -c doc/hubauth.yml.example $(DESTDIR)$(docdir)/
+	$(INSTALL) -c -m 600 doc/hubauth.yml.example /etc/hubauth.yml
+	$(INSTALL) -d -m 600 /var/cache/hubauth
