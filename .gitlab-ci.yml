@@ -67,6 +67,7 @@ dist:
     - make dist
     - make distcheck
   artifacts:
+    paths:
     - hubauth-*.tar.xz
 
 deb:
