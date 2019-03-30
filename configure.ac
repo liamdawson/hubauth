@@ -1,5 +1,5 @@
 AC_INIT([hubauth], m4_esyscmd([grep ^version Cargo.toml | head -1 | awk '{print $3}' | tr -d '"' | tr -d "\n"]), [liam@ldaws.com])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign no-dependencies no-dist-gzip dist-xz subdir-objects])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign no-dependencies no-dist-gzip dist-xz subdir-objects tar-ustar])
 
 VERSION=$(grep ^version Cargo.toml | head -1 | awk '{print $3}' | tr -d '"' | tr -d "\n")
 
