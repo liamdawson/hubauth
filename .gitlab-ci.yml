@@ -7,6 +7,7 @@ stages:
 - lint
 - test
 - build
+- dist
 - package
 - deploy
 
@@ -57,7 +58,7 @@ build:
     - cargo build --release
 
 dist:
-  stage: package
+  stage: dist
   image: rust:latest
   script:
     - cargo install cargo-vendor
@@ -68,7 +69,7 @@ dist:
   artifacts:
     - hubauth-*.tar.xz
 
-tarball:
+deb:
   stage: package
   image: rust:latest
   script: 'true'
