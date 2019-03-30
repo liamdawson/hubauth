@@ -61,7 +61,8 @@ dist:
   stage: dist
   image: rust:latest
   script:
-    - cargo install cargo-vendor
+    - command cargo-vendor -v || cargo install cargo-vendor
+    - export PATH="${PATH}:${HOME}/.cargo/bin"
     - autoreconf -si
     - ./configure
     - make dist
