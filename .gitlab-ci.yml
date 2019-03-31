@@ -71,14 +71,21 @@ dist:
     - make distcheck
   artifacts:
     paths:
-    - hubauth-*.tar.xz
+      - hubauth-*.tar.xz
 
 deb:
   stage: package
-  image: rust:latest
-  script: 'true'
+  image: buildpack-deps:bionic
+  script:
+    - apt-get update
+    - apt-get install cargo -y
+    - dh_auto_build
+    - dh_builddeb
+  artifacts:
+    paths:
+      - hubauth*.deb
 
 artifacts:
   stage: deploy
   image: rust:latest
-  script: 'true'
+  script: "true"
