@@ -1,6 +1,6 @@
 ---
 variables:
-  CARGO_HOME: $CI_PROJECT_DIR/.cargo
+  CARGO_HOME: $CI_PROJECT_DIR/cache/.cargo
   DEBIAN_FRONTEND: noninteractive
 
 stages:
@@ -13,7 +13,7 @@ stages:
 
 cache:
   paths:
-    - .cargo
+    - cache/
     - target
 
 clippy:
