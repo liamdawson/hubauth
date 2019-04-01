@@ -20,6 +20,7 @@ clippy:
   stage: lint
   image: rust:latest
   script:
+    - bash -c '[ ! -f ".cargo/config" ] || rm ".cargo/config"'
     - rustup component add clippy
     - cargo clippy --all-targets -- -D warnings
 
@@ -27,6 +28,7 @@ rustfmt check:
   stage: lint
   image: rust:latest
   script:
+    - bash -c '[ ! -f ".cargo/config" ] || rm ".cargo/config"'
     - rustup component add rustfmt
     - cargo fmt -- --check
 
