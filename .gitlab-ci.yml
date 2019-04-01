@@ -4,8 +4,8 @@ variables:
   DEBIAN_FRONTEND: noninteractive
 
 stages:
-- lint
-- test
+# - lint
+# - test
 - build
 - dist
 - package
@@ -16,42 +16,42 @@ cache:
     - cache/
     - target
 
-clippy:
-  stage: lint
-  image: rust:latest
-  script:
-    - bash -c '[ ! -f ".cargo/config" ] || rm ".cargo/config"'
-    - rustup component add clippy
-    - cargo clippy --all-targets -- -D warnings
-
-rustfmt check:
-  stage: lint
-  image: rust:latest
-  script:
-    - bash -c '[ ! -f ".cargo/config" ] || rm ".cargo/config"'
-    - rustup component add rustfmt
-    - cargo fmt -- --check
-
-test 0/3:
-  stage: test
-  image: rust:latest
-  script:
-    - cargo test --verbose --all-targets
-
-test 1/3:
-  stage: test
-  image: rust:latest
-  script:
-    - rustup install beta
-    - cargo +beta test --verbose --all-targets
-
-test 2/3:
-  stage: test
-  image: rust:latest
-  allow_failure: true
-  script:
-    - rustup install nightly
-    - cargo +nightly test --verbose --all-targets
+# clippy:
+#   stage: lint
+#   image: rust:latest
+#   script:
+#     - bash -c '[ ! -f ".cargo/config" ] || rm ".cargo/config"'
+#     - rustup component add clippy
+#     - cargo clippy --all-targets -- -D warnings
+#
+# rustfmt check:
+#   stage: lint
+#   image: rust:latest
+#   script:
+#     - bash -c '[ ! -f ".cargo/config" ] || rm ".cargo/config"'
+#     - rustup component add rustfmt
+#     - cargo fmt -- --check
+#
+# test 0/3:
+#   stage: test
+#   image: rust:latest
+#   script:
+#     - cargo test --verbose --all-targets
+#
+# test 1/3:
+#   stage: test
+#   image: rust:latest
+#   script:
+#     - rustup install beta
+#     - cargo +beta test --verbose --all-targets
+#
+# test 2/3:
+#   stage: test
+#   image: rust:latest
+#   allow_failure: true
+#   script:
+#     - rustup install nightly
+#     - cargo +nightly test --verbose --all-targets
 
 build:
   stage: build
