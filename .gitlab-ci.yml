@@ -2,6 +2,8 @@
 variables:
   CARGO_HOME: $CI_PROJECT_DIR/cache/.cargo
   DEBIAN_FRONTEND: noninteractive
+  DEBEMAIL: "liam@ldaws.com"
+  DEBFULLNAME: "Liam T. Dawson"
 
 stages:
 # - lint
@@ -80,9 +82,9 @@ deb:
   image: buildpack-deps:bionic
   script:
     - apt-get update
-    - apt-get install -y cargo debhelper
+    - apt-get install -y cargo debhelper debootstrap devscripts lintian
     - dh_auto_build
-    - dh_builddeb
+    - debuild -us -uc
   artifacts:
     paths:
       - hubauth*.deb
