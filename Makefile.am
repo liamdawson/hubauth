@@ -1,4 +1,4 @@
-CARGO_BUILD = ETC_DIR="@sysconfdir@" CACHE_DIR="@localstatedir@/cache/hubauth" cargo build --release
+CARGO_BUILD = BIN_DEFAULT_CONFIG_PATH="@sysconfdir@/hubauth.yml" BIN_DEFAULT_CACHE_DIR="@localstatedir@/cache/hubauth" cargo build --release
 
 man_MANS = target/man/hubauth.1 \
 	target/man/hubauth-cached.1 \
