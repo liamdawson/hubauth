@@ -79,7 +79,7 @@ impl Into<State> for Configuration {
         State {
             caching: self
                 .caching
-                .map_or_else(|| default_caching(), |caching| caching.into()),
+                .map_or_else(default_caching, |caching| caching.into()),
             users: HashMap::from_iter(
                 self.users
                     .into_iter()
