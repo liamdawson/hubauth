@@ -74,7 +74,7 @@ Vagrant.configure("2") do |config|
     export PATH="${PATH}:${CARGO_HOME}/bin"
 
     apt-get update -y
-    apt-get install -y build-essential debhelper autotools-dev pbuilder debootstrap devscripts lintian debian-archive-keyring ubuntu-dev-tools libssl-dev libssl1.1 pkg-config
+    apt-get install -y build-essential debhelper autotools-dev pbuilder debootstrap devscripts lintian debian-archive-keyring ubuntu-dev-tools libssl-dev libssl1.1 pkg-config git-buildpackage
 
     # pbuilder create --distribution squeeze --mirror ftp://ftp.us.debian.org/debian/ --debootstrapopts "--keyring=/usr/share/keyrings/debian-archive-keyring.gpg"
     pbuilder create --distribution cosmic
