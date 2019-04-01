@@ -63,9 +63,9 @@ dist:
   stage: dist
   image: rust:latest
   script:
-    - command cargo-vendor -v || cargo install cargo-vendor
+    - '[ -f "${CARGO_HOME}/bin/cargo-vendor" ] || cargo install cargo-vendor'
     # or if that doesn't work
-    # curl -fsSL https://github.com/alexcrichton/cargo-vendor/releases/download/0.1.23/cargo-vendor-0.1.23-x86_64-unknown-linux-musl.tar.gz | tar -xz --directory="${HOME}/.cargo/bin" --strip-components=1 --wildcards */cargo-vendor
+    # curl -fsSL https://github.com/alexcrichton/cargo-vendor/releases/download/0.1.23/cargo-vendor-0.1.23-x86_64-unknown-linux-musl.tar.gz | tar -xz --directory="${CARGO_HOME}/bin" --strip-components=1 --wildcards */cargo-vendor
     - export PATH="${PATH}:${HOME}/.cargo/bin"
     - autoreconf -si
     - ./configure
