@@ -1,17 +1,16 @@
 #[macro_use]
 extern crate serde;
 
-mod bin_constants;
 mod cli;
-mod commands;
-mod configuration;
 
 use config::{Config, File};
-use configuration::Configuration;
 use structopt::StructOpt;
+use cli::configuration::Configuration;
+use cli::{CommandLineArguments, Subcommand};
+use cli::commands;
 
 fn main() {
-    let args = cli::CommandLineArguments::from_args();
+    let args = CommandLineArguments::from_args();
 
     let mut config = Config::new();
     if let Err(err) = config.merge(File::with_name(args.config_file_path.to_str().unwrap())) {
@@ -28,15 +27,18 @@ fn main() {
     };
 
     match &args.command {
-        cli::Subcommand::Fetch { user_args } => {
+        Subcommand::Fetch { user_args } => {
             commands::fetch::call(&configuration, &user_args.username)
         }
-        cli::Subcommand::Sync => commands::sync::call(&configuration),
-        cli::Subcommand::Cached { user_args } => {
+        Subcommand::Sync => commands::sync::call(&configuration),
+        Subcommand::Cached { user_args } => {
             commands::cached::call(&configuration, &user_args.username)
         }
-        cli::Subcommand::List { user_args } => {
+        Subcommand::List { user_args } => {
             commands::list::call(&configuration, &user_args.username)
+        },
+        Subcommand::Init { command, sshd_config_path, username } => {
+            commands::init::call(&sshd_config_path, &command, &username)
         }
     }
 }

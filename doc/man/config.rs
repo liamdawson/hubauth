@@ -1,4 +1,4 @@
-use crate::doc::bin_constants::{default_cache, default_config};
+use crate::doc::constants::{default_cache, default_config};
 use man::prelude::*;
 
 pub fn generate() -> Vec<(&'static str, String)> {

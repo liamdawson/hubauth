@@ -1,3 +1,3 @@
-#[path = "../src/bin_constants.rs"]
-pub mod bin_constants;
+#[path = "../src/cli/constants.rs"]
+pub mod constants;
 pub mod man;

@@ -1,4 +1,4 @@
-use crate::bin_constants::default_config;
+use super::constants::{default_config, default_cache, default_username};
 use std::path::PathBuf;
 use structopt::StructOpt;
 
@@ -62,11 +62,24 @@ pub enum Subcommand {
     Sync,
     #[structopt(
         name = "list",
-        alias = "pull",
         about = "List the remote keys for a user, falling back to cache when appropriate"
     )]
     List {
         #[structopt(flatten)]
         user_args: UserArguments,
+    },
+    /// Add the appropriate configuration to sshd_config to use hubauth
+    /// (does not use the config file)
+    #[structopt(name = "init")]
+    Init {
+        /// Path to the sshd_config file
+        #[structopt(short = "f", long = "sshd-config", default_value = "/etc/ssh/sshd_config")]
+        sshd_config_path: String,
+        /// Path to the hubauth cache
+        #[structopt(short = "x", long = "command", default_value = "list", raw(possible_values = "&[\"list\", \"cached\", \"fetch\"]"))]
+        command: String,
+        /// User with access to the hubauth cache and config file
+        #[structopt(short = "u", long = "user", raw(default_value = "default_username()"))]
+        username: String,
     },
 }

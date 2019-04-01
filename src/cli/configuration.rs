@@ -1,4 +1,4 @@
-use crate::bin_constants::default_cache;
+use super::constants::default_cache;
 use hubauth::models::*;
 use std::collections::HashMap;
 use std::iter::FromIterator;
