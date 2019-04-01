@@ -80,7 +80,7 @@ deb:
   image: buildpack-deps:bionic
   script:
     - apt-get update
-    - apt-get install -y cargo dh_auto_build
+    - apt-get install -y cargo debhelper
     - dh_auto_build
     - dh_builddeb
   artifacts:
