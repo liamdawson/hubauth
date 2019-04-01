@@ -1,3 +1,4 @@
+use crate::bin_constants::default_config;
 use std::path::PathBuf;
 use structopt::StructOpt;
 
@@ -23,7 +24,7 @@ pub struct CommandLineArguments {
         short = "c",
         long = "config-file",
         help = "Path to the config file",
-        default_value = "/etc/hubauth.yml",
+        raw(default_value = "default_config()"),
         parse(from_os_str)
     )]
     pub config_file_path: PathBuf,

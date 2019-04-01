@@ -1,12 +1,13 @@
-extern crate hubauth;
-extern crate structopt;
+#[macro_use]
+extern crate serde;
 
+mod bin_constants;
 mod cli;
 mod commands;
+mod configuration;
 
 use config::{Config, File};
-use hubauth::configuration::Configuration;
-use hubauth::models::State;
+use configuration::Configuration;
 use structopt::StructOpt;
 
 fn main() {
@@ -19,7 +20,7 @@ fn main() {
     }
 
     let configuration = match config.try_into::<Configuration>() {
-        Ok(configuration) => State::from(configuration),
+        Ok(configuration) => configuration.into(),
         Err(err) => {
             eprintln!("error: {:?}", err);
             std::process::exit(3);
