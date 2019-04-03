@@ -44,6 +44,7 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
+  config.vm.synced_folder ".", "/src", readonly: true
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -67,28 +68,6 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
-  config.vm.provision "shell", inline: <<-SHELL
-    set -eu
-
-    export CARGO_HOME="${CARGO_HOME:-${HOME}/.cargo}"
-    export PATH="${PATH}:${CARGO_HOME}/bin"
-
-    apt-get update -y
-    apt-get install -y build-essential debhelper autotools-dev pbuilder debootstrap devscripts lintian debian-archive-keyring ubuntu-dev-tools libssl-dev libssl1.1 pkg-config git-buildpackage
-
-    # pbuilder create --distribution squeeze --mirror ftp://ftp.us.debian.org/debian/ --debootstrapopts "--keyring=/usr/share/keyrings/debian-archive-keyring.gpg"
-    pbuilder create --distribution cosmic
-
-    command -v rustup || curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain stable -y
-    rustup component add rustfmt
-    rustup component add clippy
-    rustup install beta
-    rustup install nightly
-    rustup update
-
-    # pbuilder --create --distribution bionic --architecture amd64 --basetgz /var/cache/pbuilder/bionic-amd64-base.tgz
-
-    echo 'set -eu; sudo pbuilder update && rm -rf "${HOME}/proj"; mkdir -p "${HOME}/proj" && cp -r /vagrant "${HOME}/proj" && ([ -f "${HOME}/.cargo/bin/cargo-vendor" ] || cargo install cargo-vendor) && cd "${HOME}/proj" && autoreconf -si && dh_auto_build && pdebuild -us -uc' > "${HOME}/do"
-    chmod +x "${HOME}/do"
-  SHELL
+  config.vm.provision "shell", path: "./misc/vagrant/machine-config.sh", keep_color: true, privileged: true
+  config.vm.provision "shell", path: "./misc/vagrant/user-config.sh", keep_color: true, privileged: false
 end
