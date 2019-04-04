@@ -1,4 +1,4 @@
-use super::constants::{default_config, default_cache, default_username};
+use super::constants::{default_config, default_username};
 use std::path::PathBuf;
 use structopt::StructOpt;
 
@@ -20,14 +20,6 @@ fn validate_username(username: String) -> Result<(), String> {
 #[derive(Debug, StructOpt)]
 #[structopt()]
 pub struct CommandLineArguments {
-    #[structopt(
-        short = "c",
-        long = "config-file",
-        help = "Path to the config file",
-        raw(default_value = "default_config()"),
-        parse(from_os_str)
-    )]
-    pub config_file_path: PathBuf,
     #[structopt(subcommand)]
     pub command: Subcommand,
 }
@@ -37,46 +29,76 @@ pub struct UserArguments {
     #[structopt(
         name = "USERNAME",
         required = true,
-        help = "A username to lookup to find key sources.",
         raw(validator = "validate_username")
     )]
+    /// A username to lookup to find key sources.
     pub username: String,
 }
 
 #[derive(Debug, StructOpt)]
+pub struct ConfigArguments {
+    #[structopt(
+        long = "config-file",
+        raw(default_value = "default_config()"),
+        parse(from_os_str)
+    )]
+    /// Path to the config file
+    pub config_file_path: PathBuf,
+    #[structopt(long = "cache-directory")]
+    /// Path to the cache directory (takes precedence)
+    pub cache_directory: Option<String>,
+}
+
+#[derive(Debug, StructOpt)]
 pub enum Subcommand {
-    #[structopt(name = "fetch", about = "Retrieve the remote keys for a user")]
+    /// Retrieve the remote keys for a user
+    #[structopt(name = "fetch")]
     Fetch {
         #[structopt(flatten)]
         user_args: UserArguments,
+        #[structopt(flatten)]
+        config: ConfigArguments,
     },
-    #[structopt(name = "cached", about = "Retrieve the cached keys for a user")]
+    /// Retrieve the cached keys for a user
+    #[structopt(name = "cached")]
     Cached {
         #[structopt(flatten)]
         user_args: UserArguments,
+        #[structopt(flatten)]
+        config: ConfigArguments,
     },
-    #[structopt(
-        name = "sync",
-        about = "Update the cached keys for all sources belonging to users with enabled caching"
-    )]
-    Sync,
-    #[structopt(
-        name = "list",
-        about = "List the remote keys for a user, falling back to cache when appropriate"
-    )]
+    /// Update the cached keys for all sources belonging to users with enabled caching
+    #[structopt(name = "sync")]
+    Sync {
+        #[structopt(flatten)]
+        config: ConfigArguments,
+    },
+    /// List the remote keys for a user, falling back to cache when appropriate
+    #[structopt(name = "list")]
     List {
         #[structopt(flatten)]
         user_args: UserArguments,
+        #[structopt(flatten)]
+        config: ConfigArguments,
     },
     /// Add the appropriate configuration to sshd_config to use hubauth
     /// (does not use the config file)
     #[structopt(name = "init")]
     Init {
         /// Path to the sshd_config file
-        #[structopt(short = "f", long = "sshd-config", default_value = "/etc/ssh/sshd_config")]
+        #[structopt(
+            short = "f",
+            long = "sshd-config",
+            default_value = "/etc/ssh/sshd_config"
+        )]
         sshd_config_path: String,
         /// Path to the hubauth cache
-        #[structopt(short = "x", long = "command", default_value = "list", raw(possible_values = "&[\"list\", \"cached\", \"fetch\"]"))]
+        #[structopt(
+            short = "x",
+            long = "command",
+            default_value = "list",
+            raw(possible_values = "&[\"list\", \"cached\", \"fetch\"]")
+        )]
         command: String,
         /// User with access to the hubauth cache and config file
         #[structopt(short = "u", long = "user", raw(default_value = "default_username()"))]

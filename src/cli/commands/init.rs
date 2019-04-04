@@ -5,8 +5,12 @@ pub fn bin_path() -> PathBuf {
 }
 
 pub fn call(sshd_config_path: &str, command: &str, username: &str) {
-    println!("Initializing for path {:?} in config file {} using command {} and username {}.", bin_path(), sshd_config_path, command, username);
+    println!(
+        "Initializing for path {:?} in config file {} using command {} and username {}.",
+        bin_path(),
+        sshd_config_path,
+        command,
+        username
+    );
     // let sshd_file =
-
 }
-
