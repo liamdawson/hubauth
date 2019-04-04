@@ -9,19 +9,12 @@
 
 **Not Recommended**: I suggest you wait until version 1.0
 
-On the releases tab, you'll find `tar.gz` and `deb` releases. The `deb` will configure your system to have man pages, private folders/config, and install the utility. The `tar.gz` contains some documentation, and the utility itself--configuring your system securely will be up to you.
-
 ## Development
 
 Prerequisites:
 
 * Rust stable and cargo (rustup preferred)
 * `clippy` and `rustfmt` support via cargo (e.g. `rustup component add clippy rustfmt`)
-* [changelog-cli](https://pypi.org/project/changelog-cli/) (Optional: can manually work on the changelog by hand)
-* [ronn-ng](https://rubygems.org/gems/ronn-ng) (Optional: to generate man pages)
-* make and [fpm](https://rubygems.org/gems/ronn-ng) (Optional: to generate packages)
-* dpkg tools (Optional: to generate `deb` packages)
-* rpm tools (Optional: to generate untested `rpm` packages)
 
 ## Roadmap
 
@@ -31,3 +24,4 @@ Prerequisites:
 * [ ] Debug logging
 * [ ] Cache file locking (reduce race conditions)
 * [ ] Cache clear/clean
+* [ ] Debian packaging (in separate repo)

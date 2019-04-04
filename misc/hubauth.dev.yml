@@ -5,10 +5,10 @@ caching:
 users:
   liamdawson:
     key_sources:
-    - url: "https://github.com/liamdawson.keys"
+    - github: liamdawson
   liamdawson2:
     key_sources:
-    - github: liamdawson
+    - url: "https://github.com/liamdawson.keys"
   example_user:
     cache: false
     key_sources:
