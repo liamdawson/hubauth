@@ -2,7 +2,7 @@ Source: hubauth
 Section: unknown
 Priority: optional
 Maintainer: root <liam@ldaws.com>
-Build-Depends: debhelper (>= 9), autotools-dev, cargo (>= 0.25)
+Build-Depends: debhelper (>= 9), autotools-dev, cargo (>= 0.25), libssl-dev (>= 1.1.0g-2ubuntu4)
 Standards-Version: 3.9.8
 Homepage: https://github.com/liamdawson/hubauth
 Vcs-Git: https://github.com/liamdawson/hubauth.git

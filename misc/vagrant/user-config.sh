@@ -24,7 +24,6 @@ mkdir -p "$SRC_DEST"
 cp -r /src/ "$SRC_DEST"
 command -v cargo-vendor || cargo install cargo-vendor
 cd "$SRC_DEST"
-autoreconf -si
 pdebuild -us -uc
 
 echo "Done!"

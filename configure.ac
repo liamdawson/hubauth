@@ -1,6 +1,6 @@
 AC_INIT([hubauth], m4_esyscmd([grep ^version Cargo.toml | head -1 | awk '{print $3}' | tr -d '"' | tr -d "\n"]), [liam@ldaws.com])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign no-dependencies no-dist-gzip dist-xz subdir-objects tar-ustar])
 
+PACKAGE_NAME=hubauth
 VERSION=$(grep ^version Cargo.toml | head -1 | awk '{print $3}' | tr -d '"' | tr -d "\n")
 
 AC_CHECK_PROG(CARGO, [cargo], [yes], [no])
@@ -17,6 +17,7 @@ AS_IF([ test $? != 0 ], [AC_MSG_ERROR([cargo-vendor is required])])
 dnl Release build we do.
 CARGO_TARGET_DIR=release
 AC_SUBST(CARGO_TARGET_DIR)
+AC_SUBST(PACKAGE_NAME)
 AC_SUBST(VERSION)
 
 AC_CONFIG_FILES([Makefile])

@@ -1,0 +1,42 @@
+DEFAULT_CONFIG_PATH = @sysconfdir@/@PACKAGE_NAME@.yml
+DEFAULT_CACHE_DIR = @localstatedir@/cache/@PACKAGE_NAME@
+CARGO_BUILD = BIN_DEFAULT_CONFIG_PATH="$(DEFAULT_CONFIG_PATH)" BIN_DEFAULT_CACHE_DIR="$(DEFAULT_CACHE_DIR)" cargo build --release
+SRC_FILES = src doc Cargo.toml Cargo.lock build.rs
+DIST_FILES = .cargo vendor Makefile
+
+all:
+	$(CARGO_BUILD)
+
+vendor:
+	mkdir .cargo
+	cargo vendor > .cargo/config
+
+dist: vendor
+	tar --transform 's/^/@PACKAGE_NAME@_@VERSION@\//' -cJf @PACKAGE_NAME@-@VERSION@.tar.xz $(SRC_FILES) $(DIST_FILES)
+	cp @PACKAGE_NAME@-@VERSION@.tar.xz @PACKAGE_NAME@_@VERSION@.orig.tar.xz
+	-rm -rf debuild
+	mkdir debuild
+	cp @PACKAGE_NAME@_@VERSION@.orig.tar.xz debuild/
+	tar -C debuild -xJf debuild/@PACKAGE_NAME@_@VERSION@.orig.tar.xz
+	cp -r debian debuild/@PACKAGE_NAME@_@VERSION@/
+
+install:
+	$(MKDIR_P) @bindir@/
+	$(INSTALL) -m 755 $(srcdir)/target/@CARGO_TARGET_DIR@/@PACKAGE_NAME@ @bindir@/
+	$(MKDIR_P) @docdir@
+	$(INSTALL) $(srcdir)/doc/@PACKAGE_NAME@.yml.example @docdir@/
+	$(MKDIR_P) @localstatedir@/cache
+	$(INSTALL) -d -m 600 $(DEFAULT_CACHE_DIR)
+	$(MKDIR_P) @sysconfdir@/
+	$(INSTALL) -C -m 600 $(srcdir)/doc/@PACKAGE_NAME@.yml.example $(DEFAULT_CONFIG_PATH)
+	$(MKDIR_P) @mandir@/man1
+	$(INSTALL) target/man/@PACKAGE_NAME@*.1 @mandir@/man1/
+	$(MKDIR_P) @mandir@/man5
+	$(INSTALL) target/man/@PACKAGE_NAME@*.5 @mandir@/man1/
+
+clean:
+	cargo clean
+
+uninstall:
+	-rm -rf @docdir@
+	-rm -rf @localstatedir@/cache/@PACKAGE_NAME@
