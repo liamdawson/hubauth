@@ -1,11 +1,13 @@
 use hubauth::fetch::{fetch, FetchResult};
-use hubauth::models::State;
+use crate::cli::commands::get_config;
+use crate::cli::ListOpts;
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 
-pub fn call(configuration: &State, username: &str) {
+pub fn call(opts: ListOpts) {
+    let configuration = get_config(opts.config, opts.cache_dir);
     let cacher = configuration.get_cacher();
 
-    if let Some(user) = configuration.users.get(username) {
+    if let Some(user) = configuration.users.get(&opts.username) {
         let results = user
             .source_urls_refs()
             .into_par_iter()

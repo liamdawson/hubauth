@@ -1,37 +1,53 @@
+use crate::cli::constants::{default_sshd_config, default_username};
+use crate::cli::model::{InitOpts, InitOptCommand};
 use std::borrow::Cow;
 
 pub fn bin_path() -> String {
-    std::env::current_exe().unwrap().to_str().unwrap().to_owned()
+    std::env::current_exe()
+        .unwrap()
+        .to_str()
+        .unwrap()
+        .to_owned()
 }
 
-pub fn call(sshd_config_path: &str, command: &str, username: &str, make_backup: bool) {
-    println!(
-        "Initializing for path {:?} in config file {} using command {} and username {}.",
-        bin_path(),
-        sshd_config_path,
-        command,
-        username
-    );
-
-    match inner(sshd_config_path, command, username, make_backup) {
+pub fn call(opts: InitOpts) {
+    match inner(
+        &opts.sshd_config.unwrap_or_else(|| default_sshd_config()),
+        &opts.command.unwrap_or(InitOptCommand::List).to_string(),
+        &opts.username.unwrap_or_else(|| default_username()),
+        !opts.no_backup,
+    ) {
         Ok(msg) => eprintln!("{}", msg),
-        Err(err) => { eprintln!("unable to configure the sshd_config: {}", err); std::process::exit(101); }
+        Err(err) => {
+            eprintln!("unable to configure the sshd_config: {}", err);
+            std::process::exit(101);
+        }
     }
 }
 
-fn inner(sshd_config_path: &str, command: &str, username: &str, make_backup: bool) -> std::io::Result<String> {
+fn inner(
+    sshd_config_path: &str,
+    command: &str,
+    username: &str,
+    make_backup: bool,
+) -> std::io::Result<String> {
     let current_config = std::fs::read_to_string(sshd_config_path)?;
 
     let configured_check = regex::RegexSet::new(&[
         r"(?i)(?m)^\s*AuthorizedKeysCommand\s.*$",
         r"(?i)(?m)^\s*AuthorizedKeysCommandUser\s.*$",
-    ]).unwrap();
+    ])
+    .unwrap();
 
     let command_comment = regex::Regex::new(r"(?i)(?m)^\s*#\s*AuthorizedKeysCommand\s.*$").unwrap();
-    let user_comment = regex::Regex::new(r"(?i)(?m)^\s*#\s*AuthorizedKeysCommandUser\s.*$").unwrap();
+    let user_comment =
+        regex::Regex::new(r"(?i)(?m)^\s*#\s*AuthorizedKeysCommandUser\s.*$").unwrap();
 
     if configured_check.is_match(&current_config) {
-        return Err(std::io::Error::new(std::io::ErrorKind::Other, "AuthorizedKeysCommand or AuthorizedKeysCommandUser is already configured"))
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::Other,
+            "AuthorizedKeysCommand or AuthorizedKeysCommandUser is already configured",
+        ));
     }
 
     if make_backup {

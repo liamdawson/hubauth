@@ -19,13 +19,11 @@ regex = "1.1.2"
 reqwest = "0.9.12"
 retry = "0.4.0"
 rayon = "1.0.3"
-structopt = "0.2.15"
+nom = "4.2.3"
+gumdrop = { git = "https://github.com/murarth/gumdrop.git", rev = "121667e873e8e9b5fed3d0f180978e59ac899bc9" }
 
 [dev-dependencies]
 mockito = "0.17.0"
-
-[build-dependencies]
-man = "0.3.0"
 
 [badges]
 travis-ci = { repository = "liamdawson/hubauth" }

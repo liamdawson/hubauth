@@ -1,8 +1,11 @@
+use super::get_config;
+use crate::cli::model::FetchOpts;
 use hubauth::fetch::{fetch_parallel, FetchResult};
-use hubauth::models::State;
 
-pub fn call(configuration: &State, username: &str) {
-    if let Some(user) = configuration.users.get(username) {
+pub fn call(opts: FetchOpts) {
+    let configuration = get_config(opts.config, opts.cache_dir);
+
+    if let Some(user) = configuration.users.get(&opts.username) {
         let results = fetch_parallel(user.source_urls_refs())
             .into_iter()
             .map(|(url, res)| {
@@ -19,8 +22,8 @@ pub fn call(configuration: &State, username: &str) {
             .collect::<Vec<_>>()
             .join("\n\n");
 
-        println!("# keys for {}:\n\n{}", username, results);
+        println!("# keys for {}:\n\n{}", &opts.username, results);
     } else {
-        eprintln!("# no user {}", username);
+        eprintln!("# no user {}", &opts.username);
     }
 }

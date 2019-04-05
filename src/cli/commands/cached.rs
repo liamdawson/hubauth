@@ -1,7 +1,10 @@
-use hubauth::models::State;
+use super::get_config;
+use crate::cli::model::CachedOpts;
 
-pub fn call(configuration: &State, username: &str) {
-    if let Some(user) = configuration.users.get(username) {
+pub fn call(opts: CachedOpts) {
+    let configuration = get_config(opts.config, opts.cache_dir);
+
+    if let Some(user) = configuration.users.get(&opts.username) {
         let result = if user.cache {
             user.source_urls_refs()
                 .into_iter()
@@ -17,8 +20,8 @@ pub fn call(configuration: &State, username: &str) {
         } else {
             "# caching is disabled for this user".to_string()
         };
-        println!("# keys for {}:\n\n{}", username, result)
+        println!("# keys for {}:\n\n{}", &opts.username, result)
     } else {
-        println!("# no user {}", username);
+        println!("# no user {}", &opts.username);
     }
 }
