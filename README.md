@@ -14,7 +14,13 @@
 Prerequisites:
 
 * Rust stable and cargo (rustup preferred)
+  * Goal: use 1.24.1 for stretch `deb-src` compatibility
+  * Might not be feasible: pre-2018 edition
 * `clippy` and `rustfmt` support via cargo (e.g. `rustup component add clippy rustfmt`)
+  * Don't need to run at an older version
+* `pandoc` (= [1.17.2](https://github.com/jgm/pandoc/releases/tag/1.17.2))
+
+(Package versions are generally chosen for Debian `stretch` compatibility)
 
 ## Roadmap
 
