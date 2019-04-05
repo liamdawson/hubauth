@@ -21,6 +21,7 @@ retry = "0.4.0"
 rayon = "1.0.3"
 nom = "4.2.3"
 gumdrop = { git = "https://github.com/murarth/gumdrop.git", rev = "121667e873e8e9b5fed3d0f180978e59ac899bc9" }
+mio_httpc = { version = "0.8.6", features = ['native'] }
 
 [dev-dependencies]
 mockito = "0.17.0"
