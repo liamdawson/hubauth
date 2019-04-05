@@ -14,9 +14,8 @@ categories = ["command-line-utilities"]
 [dependencies]
 config = { version = "0.9.2", default-features = false, features = ["yaml"] }
 sha2 = "0.8.0"
-serde = { version = "1.0.89", features = ["derive"] }
-regex = "1.1.2"
-reqwest = "0.9.12"
+serde = { version = "1.0.90", features = ["derive"] }
+regex = "1.1.5"
 retry = "0.4.0"
 rayon = "1.0.3"
 nom = "4.2.3"
