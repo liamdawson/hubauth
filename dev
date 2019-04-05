@@ -9,6 +9,6 @@ case "$CMD" in
     cargo run -- "$CMD" "$@"
     ;;
   *)
-    cargo run -- "$CMD" --config-file="${DIR}/misc/hubauth.dev.yml" "$@"
+    cargo run -- "$CMD" --config="${DIR}/misc/hubauth.dev.yml" "$@"
     ;;
 esac

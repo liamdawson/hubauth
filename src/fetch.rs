@@ -1,7 +1,6 @@
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
-use reqwest::{Client, Response, Result};
 use retry::retry;
-use std::time::Duration;
+use mio_httpc::{CallBuilder, Result, Response};
 
 const TIMEOUT_LENGTH: u64 = 2500u64;
 const MS_BETWEEN_RETRIES: u64 = 500;
@@ -15,11 +14,15 @@ pub enum FetchResult {
     PermanentError,
 }
 
-fn error_response_type(result: &Result<Response>) -> Option<FetchResult> {
-    if let Ok(response) = result {
-        if response.status().is_success() {
+fn success_status(status: u16) -> bool {
+    status >= 200 && status < 300
+}
+
+fn error_response_type(result: &Result<(Response, Vec<u8>)>) -> Option<FetchResult> {
+    if let Ok((response, _)) = result {
+        if success_status(response.status) {
             return None;
-        } else if PERMANENT_ERROR_CODES.contains(&response.status().as_u16()) {
+        } else if PERMANENT_ERROR_CODES.contains(&response.status) {
             return Some(FetchResult::PermanentError);
         }
     }
@@ -27,11 +30,11 @@ fn error_response_type(result: &Result<Response>) -> Option<FetchResult> {
     Some(FetchResult::TransientError)
 }
 
-fn try_fetch(url: &str, timeout: u64) -> Result<Response> {
-    let client = Client::builder()
-        .timeout(Duration::from_millis(timeout))
-        .build()?;
-    client.get(url).send()
+fn try_fetch(url: &str, timeout: u64) -> Result<(Response, Vec<u8>)> {
+    CallBuilder::get()
+        .timeout_ms(timeout)
+        .url(url)?
+        .exec()
 }
 
 pub fn fetch(url: &str) -> FetchResult {
@@ -39,7 +42,7 @@ pub fn fetch(url: &str) -> FetchResult {
         MAX_RETRIES,
         MS_BETWEEN_RETRIES,
         || try_fetch(url, TIMEOUT_LENGTH),
-        |res| error_response_type(res) != Some(FetchResult::TransientError),
+        |result| error_response_type(&result) != Some(FetchResult::TransientError),
     );
 
     if retry_result.is_err() {
@@ -47,10 +50,10 @@ pub fn fetch(url: &str) -> FetchResult {
     }
 
     // retry condition should make the second unwrap safe
-    let mut request_result = retry_result.unwrap().unwrap();
+    let (response, raw_body) = retry_result.unwrap().unwrap();
 
-    if request_result.status().is_success() {
-        if let Ok(response_text) = request_result.text() {
+    if success_status(response.status) {
+        if let Ok(response_text) = String::from_utf8(raw_body) {
             return FetchResult::Success(response_text);
         }
     }
