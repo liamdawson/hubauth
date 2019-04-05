@@ -29,7 +29,8 @@ fn main() {
             command,
             sshd_config_path,
             username,
-        } => commands::init::call(&sshd_config_path, &command, &username),
+            no_backup
+        } => commands::init::call(&sshd_config_path, &command, &username, !no_backup),
     }
 }
 

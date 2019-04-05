@@ -103,5 +103,8 @@ pub enum Subcommand {
         /// User with access to the hubauth cache and config file
         #[structopt(short = "u", long = "user", raw(default_value = "default_username()"))]
         username: String,
+        /// Don't create a backup of the sshd_config file
+        #[structopt(long = "no-backup")]
+        no_backup: bool,
     },
 }
