@@ -14,7 +14,7 @@ use gumdrop::Options;
 impl Call for CliOptions {
     fn call(self) {
         if self.version {
-            println!("{}", env!("CARGO_PKG_VERSION"));
+            println!("{} {}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
         } else {
             if let Some(cmd) = self.command {
                 cmd.call();
