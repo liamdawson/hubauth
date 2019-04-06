@@ -12,9 +12,9 @@ pub fn bin_path() -> String {
 
 pub fn call(opts: InitOpts) {
     match inner(
-        &opts.sshd_config.unwrap_or_else(|| default_sshd_config()),
+        &opts.sshd_config.unwrap_or_else(default_sshd_config),
         &opts.command.unwrap_or(InitOptCommand::List).to_string(),
-        &opts.username.unwrap_or_else(|| default_username()),
+        &opts.username.unwrap_or_else(default_username),
         !opts.no_backup,
     ) {
         Ok(msg) => eprintln!("{}", msg),

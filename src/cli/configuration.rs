@@ -42,7 +42,7 @@ impl Into<User> for UserRaw {
                 .into_iter()
                 .flat_map(|src| {
                     if let Some(url) = src.url {
-                        Some(url.to_owned())
+                        Some(url)
                     } else if let Some(handle) = src.github {
                         Some(format!("https://github.com/{}.keys", handle))
                     } else {
@@ -57,9 +57,7 @@ impl Into<User> for UserRaw {
 impl Into<Caching> for CachingRaw {
     fn into(self) -> Caching {
         Caching {
-            destination: self
-                .destination
-                .unwrap_or_else(|| String::from(default_cache())),
+            destination: self.destination.unwrap_or_else(default_cache),
             min_age: self.minimum_age.unwrap_or(DEFAULT_MINIMUM_AGE),
             max_age: self.maximum_age.unwrap_or(DEFAULT_MAXIMUM_AGE),
         }
@@ -68,7 +66,7 @@ impl Into<Caching> for CachingRaw {
 
 pub fn default_caching() -> Caching {
     Caching {
-        destination: default_cache().to_string(),
+        destination: default_cache(),
         min_age: DEFAULT_MINIMUM_AGE,
         max_age: DEFAULT_MAXIMUM_AGE,
     }

@@ -16,15 +16,15 @@ impl Call for CliOptions {
         if self.version {
             println!("{} {}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
         } else {
-            if let Some(cmd) = self.command {
-                cmd.call();
-            } else {
+            if self.command.is_none() {
                 eprintln!(
                     "error: a subcommand was expected: \n\n{})",
-                    CliOptions::command_list().unwrap()
+                    Self::command_list().unwrap()
                 );
                 std::process::exit(EXIT_INVOCATION_ERROR);
             }
+
+            self.command.unwrap().call();
         }
     }
 }
@@ -43,9 +43,7 @@ impl Call for CliCommands {
 
 fn get_config(config_path: Option<String>, cache_directory: Option<String>) -> State {
     let mut config = Config::new();
-    if let Err(err) = config.merge(File::with_name(
-        &config_path.unwrap_or_else(|| default_config().to_owned()),
-    )) {
+    if let Err(err) = config.merge(File::with_name(&config_path.unwrap_or_else(default_config))) {
         eprintln!("config error: {:?}", err);
         std::process::exit(EXIT_CONFIGURATION_ERROR);
     }

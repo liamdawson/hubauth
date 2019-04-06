@@ -16,21 +16,21 @@ pub fn call(opts: ListOpts) {
                     (
                         url,
                         if user.cache
-                            && cacher.key_newer_than(&url, configuration.caching.min_age)
+                            && cacher.key_newer_than(url, configuration.caching.min_age)
                                 == Some(true)
                         {
-                            configuration.get_cache_for_user(user, &url)
+                            configuration.get_cache_for_user(user, url)
                         } else {
-                            match get(&url) {
+                            match get(url) {
                                 Outcome::Success(content) => {
-                                    configuration.set_cache_for_user(user, &url, &content);
+                                    configuration.set_cache_for_user(user, url, &content);
                                     content
                                 }
                                 Outcome::TransientError => {
-                                    configuration.get_cache_for_user(user, &url)
+                                    configuration.get_cache_for_user(user, url)
                                 }
                                 Outcome::PermanentError => {
-                                    configuration.set_cache_for_user(user, &url, "");
+                                    configuration.set_cache_for_user(user, url, "");
                                     String::from("")
                                 }
                             }

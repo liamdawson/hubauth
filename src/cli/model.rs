@@ -1,3 +1,5 @@
+#![allow(clippy::default_trait_access)]
+
 use gumdrop::Options;
 use std::str::FromStr;
 use std::string::ToString;

@@ -12,7 +12,7 @@ pub fn call(opts: CachedOpts) {
                     format!(
                         "# {}:\n{}",
                         url,
-                        configuration.get_cache_for_user(user, &url)
+                        configuration.get_cache_for_user(user, url)
                     )
                 })
                 .collect::<Vec<_>>()

@@ -9,8 +9,13 @@ pub fn call(opts: SyncOpts) {
     let mut cached_sources: Vec<_> = configuration
         .users
         .iter()
-        .filter(|(_, user)| user.cache)
-        .flat_map(|(_, user)| user.source_urls_refs())
+        .flat_map(|(_, user)| {
+            if user.cache {
+                user.source_urls_refs()
+            } else {
+                vec![]
+            }
+        })
         .collect();
 
     cached_sources.sort();
