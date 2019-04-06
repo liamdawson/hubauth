@@ -12,23 +12,23 @@ keywords = ["ssh", "cli", "authorized_keys"]
 categories = ["command-line-utilities"]
 
 [dependencies]
+chttp = { version = "0.4.2", default-features = false, features = ["http2"] }
 config = { version = "0.9.2", default-features = false, features = ["yaml"] }
-sha2 = "0.8.0"
-serde = { version = "1.0.90", features = ["derive"] }
+gumdrop = { git = "https://github.com/murarth/gumdrop.git", rev = "121667e873e8e9b5fed3d0f180978e59ac899bc9" }
+nom = "4.2.3"
 regex = "1.1.5"
 retry = "0.4.0"
 rayon = "1.0.3"
-nom = "4.2.3"
-gumdrop = { git = "https://github.com/murarth/gumdrop.git", rev = "121667e873e8e9b5fed3d0f180978e59ac899bc9" }
-chttp = { version = "0.4.2", default-features = false, features = ["http2"] }
+sha2 = "0.8.0"
+serde = { version = "1.0.90", features = ["derive"] }
 
 [dev-dependencies]
-mockito = "0.17.0"
 assert_cmd = "0.11.1"
 assert_fs = "0.11.3"
 dir-diff = "0.3.1"
-tempfile = "3.0.7"
+mockito = "0.17.0"
 predicates = "1.0.0"
+tempfile = "3.0.7"
 
 [badges]
 travis-ci = { repository = "liamdawson/hubauth" }
