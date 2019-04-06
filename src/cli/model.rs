@@ -23,6 +23,7 @@ pub struct CliOptions {
     pub help: bool,
     #[options(short = "V", help = "Print application version")]
     pub version: bool,
+    // not marked as required, or version wouldn't work
     #[options(command)]
     pub command: Option<CliCommands>,
 }

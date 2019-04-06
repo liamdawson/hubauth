@@ -24,6 +24,11 @@ chttp = { version = "0.4.2", default-features = false, features = ["http2"] }
 
 [dev-dependencies]
 mockito = "0.17.0"
+assert_cmd = "0.11.1"
+assert_fs = "0.11.3"
+dir-diff = "0.3.1"
+tempfile = "3.0.7"
+predicates = "1.0.0"
 
 [badges]
 travis-ci = { repository = "liamdawson/hubauth" }

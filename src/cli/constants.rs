@@ -21,3 +21,6 @@ pub fn default_username() -> String {
         .unwrap_or("root")
         .to_owned()
 }
+
+pub const EXIT_INVOCATION_ERROR: i32 = 2;
+pub const EXIT_CONFIGURATION_ERROR: i32 = 3;

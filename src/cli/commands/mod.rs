@@ -5,7 +5,7 @@ pub mod list;
 pub mod sync;
 
 use super::configuration::Configuration;
-use super::constants::default_config;
+use super::constants::{default_config, EXIT_CONFIGURATION_ERROR, EXIT_INVOCATION_ERROR};
 use super::model::{Call, CliCommands, CliOptions};
 use config::{Config, File};
 use hubauth::models::State;
@@ -20,7 +20,7 @@ impl Call for CliOptions {
                 cmd.call();
             } else {
                 eprintln!("error: a subcommand was expected: \n\n{})", CliOptions::command_list().unwrap());
-                std::process::exit(2);
+                std::process::exit(EXIT_INVOCATION_ERROR);
             }
         }
     }
@@ -44,14 +44,14 @@ fn get_config(config_path: Option<String>, cache_directory: Option<String>) -> S
         &config_path.unwrap_or_else(|| default_config().to_owned()),
     )) {
         eprintln!("config error: {:?}", err);
-        std::process::exit(2);
+        std::process::exit(EXIT_CONFIGURATION_ERROR);
     }
 
     let mut configuration: State = match config.try_into::<Configuration>() {
         Ok(configuration) => configuration.into(),
         Err(err) => {
             eprintln!("config error: {:?}", err);
-            std::process::exit(3);
+            std::process::exit(EXIT_CONFIGURATION_ERROR);
         }
     };
 
