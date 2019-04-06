@@ -1,5 +1,5 @@
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
-use reqwest::{Client, Response, Result};
+use chttp::{Client, Response, Options, Error};
 use retry::retry;
 use std::time::Duration;
 
@@ -15,7 +15,7 @@ pub enum FetchResult {
     PermanentError,
 }
 
-fn error_response_type(result: &Result<Response>) -> Option<FetchResult> {
+fn error_response_type(result: &Result<Response, Error>) -> Option<FetchResult> {
     if let Ok(response) = result {
         if response.status().is_success() {
             return None;
@@ -27,11 +27,16 @@ fn error_response_type(result: &Result<Response>) -> Option<FetchResult> {
     Some(FetchResult::TransientError)
 }
 
-fn try_fetch(url: &str, timeout: u64) -> Result<Response> {
+fn try_fetch(url: &str, timeout: u64) -> Result<Response, Error> {
+    let mut options = Options::default();
+
+    options.timeout = Some(Duration::from_millis(timeout));
+
     let client = Client::builder()
-        .timeout(Duration::from_millis(timeout))
+        .options(options)
         .build()?;
-    client.get(url).send()
+
+    client.get(url)
 }
 
 pub fn fetch(url: &str) -> FetchResult {
@@ -50,7 +55,7 @@ pub fn fetch(url: &str) -> FetchResult {
     let mut request_result = retry_result.unwrap().unwrap();
 
     if request_result.status().is_success() {
-        if let Ok(response_text) = request_result.text() {
+        if let Ok(response_text) = request_result.body_mut().text() {
             return FetchResult::Success(response_text);
         }
     }
