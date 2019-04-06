@@ -28,7 +28,7 @@ impl User {
 }
 
 impl State {
-    pub fn get_cacher(&self) -> FilesystemCacher {
+    pub fn get_cacher(&self) -> FilesystemCacher<'_> {
         FilesystemCacher::new(Path::new(&self.caching.destination))
     }
 
