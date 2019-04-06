@@ -1,6 +1,6 @@
-use std::process::Command;
 use assert_cmd::prelude::*;
 use predicates::prelude::*;
+use std::process::Command;
 
 const PKG_NAME: &str = "hubauth";
 

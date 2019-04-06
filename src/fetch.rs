@@ -1,30 +1,30 @@
+use chttp::{Client, Error, Options, Response};
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
-use chttp::{Client, Response, Options, Error};
 use retry::retry;
 use std::time::Duration;
 
-const TIMEOUT_LENGTH: u64 = 2500u64;
+const TIMEOUT_LENGTH: u64 = 2500_u64;
 const MS_BETWEEN_RETRIES: u64 = 500;
 const MAX_RETRIES: u64 = 2;
 const PERMANENT_ERROR_CODES: &[u16] = &[401, 403, 404, 405, 406, 410, 451];
 
 #[derive(PartialEq, Clone, Debug)]
-pub enum FetchResult {
+pub enum Outcome {
     Success(String),
     TransientError,
     PermanentError,
 }
 
-fn error_response_type(result: &Result<Response, Error>) -> Option<FetchResult> {
+fn error_response_type(result: &Result<Response, Error>) -> Option<Outcome> {
     if let Ok(response) = result {
         if response.status().is_success() {
             return None;
         } else if PERMANENT_ERROR_CODES.contains(&response.status().as_u16()) {
-            return Some(FetchResult::PermanentError);
+            return Some(Outcome::PermanentError);
         }
     }
 
-    Some(FetchResult::TransientError)
+    Some(Outcome::TransientError)
 }
 
 fn try_fetch(url: &str, timeout: u64) -> Result<Response, Error> {
@@ -32,23 +32,21 @@ fn try_fetch(url: &str, timeout: u64) -> Result<Response, Error> {
 
     options.timeout = Some(Duration::from_millis(timeout));
 
-    let client = Client::builder()
-        .options(options)
-        .build()?;
+    let client = Client::builder().options(options).build()?;
 
     client.get(url)
 }
 
-pub fn fetch(url: &str) -> FetchResult {
+pub fn get(url: &str) -> Outcome {
     let retry_result = retry(
         MAX_RETRIES,
         MS_BETWEEN_RETRIES,
         || try_fetch(url, TIMEOUT_LENGTH),
-        |res| error_response_type(res) != Some(FetchResult::TransientError),
+        |res| error_response_type(res) != Some(Outcome::TransientError),
     );
 
     if retry_result.is_err() {
-        return FetchResult::TransientError;
+        return Outcome::TransientError;
     }
 
     // retry condition should make the second unwrap safe
@@ -56,21 +54,21 @@ pub fn fetch(url: &str) -> FetchResult {
 
     if request_result.status().is_success() {
         if let Ok(response_text) = request_result.body_mut().text() {
-            return FetchResult::Success(response_text);
+            return Outcome::Success(response_text);
         }
     }
 
     // treat a decoding error as a permanent error, to be safe
-    FetchResult::PermanentError
+    Outcome::PermanentError
 }
 
-pub fn fetch_parallel<'a>(urls: Vec<&'a str>) -> Vec<(&'a str, FetchResult)> {
-    urls.into_par_iter().map(|url| (url, fetch(url))).collect()
+pub fn get_para<'a>(urls: Vec<&'a str>) -> Vec<(&'a str, Outcome)> {
+    urls.into_par_iter().map(|url| (url, get(url))).collect()
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{fetch, FetchResult};
+    use super::{get, Outcome};
     use mockito;
 
     #[test]
@@ -83,7 +81,7 @@ mod tests {
             .with_body(test_string)
             .create();
 
-        assert_eq!(FetchResult::Success(String::from(test_string)), fetch(url));
+        assert_eq!(Outcome::Success(String::from(test_string)), get(url));
 
         request_mock.assert();
     }
@@ -96,7 +94,7 @@ mod tests {
             .expect(2)
             .create();
 
-        assert_eq!(FetchResult::TransientError, fetch(url));
+        assert_eq!(Outcome::TransientError, get(url));
 
         request_mock.assert();
     }
@@ -111,7 +109,7 @@ mod tests {
                 .expect(1)
                 .create();
 
-            assert_eq!(FetchResult::PermanentError, fetch(url));
+            assert_eq!(Outcome::PermanentError, get(url));
 
             request_mock.assert();
         }

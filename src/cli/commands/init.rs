@@ -1,5 +1,5 @@
 use crate::cli::constants::{default_sshd_config, default_username};
-use crate::cli::model::{InitOpts, InitOptCommand};
+use crate::cli::model::{InitOptCommand, InitOpts};
 use std::borrow::Cow;
 
 pub fn bin_path() -> String {

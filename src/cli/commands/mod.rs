@@ -8,8 +8,8 @@ use super::configuration::Configuration;
 use super::constants::{default_config, EXIT_CONFIGURATION_ERROR, EXIT_INVOCATION_ERROR};
 use super::model::{Call, CliCommands, CliOptions};
 use config::{Config, File};
-use hubauth::models::State;
 use gumdrop::Options;
+use hubauth::models::State;
 
 impl Call for CliOptions {
     fn call(self) {
@@ -19,7 +19,10 @@ impl Call for CliOptions {
             if let Some(cmd) = self.command {
                 cmd.call();
             } else {
-                eprintln!("error: a subcommand was expected: \n\n{})", CliOptions::command_list().unwrap());
+                eprintln!(
+                    "error: a subcommand was expected: \n\n{})",
+                    CliOptions::command_list().unwrap()
+                );
                 std::process::exit(EXIT_INVOCATION_ERROR);
             }
         }

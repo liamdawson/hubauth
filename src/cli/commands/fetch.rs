@@ -1,21 +1,21 @@
 use super::get_config;
 use crate::cli::model::FetchOpts;
-use hubauth::fetch::{fetch_parallel, FetchResult};
+use hubauth::fetch::{get_para, Outcome};
 
 pub fn call(opts: FetchOpts) {
     let configuration = get_config(opts.config, opts.cache_dir);
 
     if let Some(user) = configuration.users.get(&opts.username) {
-        let results = fetch_parallel(user.source_urls_refs())
+        let results = get_para(user.source_urls_refs())
             .into_iter()
             .map(|(url, res)| {
                 format!(
                     "# {}\n{}",
                     url,
                     match res {
-                        FetchResult::Success(val) => val,
-                        FetchResult::TransientError => "# a transient error occurred".to_string(),
-                        FetchResult::PermanentError => "# a permanent error occurred".to_string(),
+                        Outcome::Success(val) => val,
+                        Outcome::TransientError => "# a transient error occurred".to_string(),
+                        Outcome::PermanentError => "# a permanent error occurred".to_string(),
                     }
                 )
             })

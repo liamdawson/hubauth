@@ -1,6 +1,6 @@
-use hubauth::fetch::{fetch, FetchResult};
 use crate::cli::commands::get_config;
 use crate::cli::ListOpts;
+use hubauth::fetch::{get, Outcome};
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 
 pub fn call(opts: ListOpts) {
@@ -21,15 +21,15 @@ pub fn call(opts: ListOpts) {
                         {
                             configuration.get_cache_for_user(user, &url)
                         } else {
-                            match fetch(&url) {
-                                FetchResult::Success(content) => {
+                            match get(&url) {
+                                Outcome::Success(content) => {
                                     configuration.set_cache_for_user(user, &url, &content);
                                     content
                                 }
-                                FetchResult::TransientError => {
+                                Outcome::TransientError => {
                                     configuration.get_cache_for_user(user, &url)
                                 }
-                                FetchResult::PermanentError => {
+                                Outcome::PermanentError => {
                                     configuration.set_cache_for_user(user, &url, "");
                                     String::from("")
                                 }

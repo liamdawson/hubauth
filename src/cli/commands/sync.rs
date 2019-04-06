@@ -1,6 +1,6 @@
-use crate::cli::SyncOpts;
 use crate::cli::commands::get_config;
-use hubauth::fetch::{fetch_parallel, FetchResult};
+use crate::cli::SyncOpts;
+use hubauth::fetch::{get_para, Outcome};
 
 pub fn call(opts: SyncOpts) {
     let configuration = get_config(opts.config, opts.cache_dir);
@@ -16,14 +16,14 @@ pub fn call(opts: SyncOpts) {
     cached_sources.sort();
     cached_sources.dedup();
 
-    fetch_parallel(cached_sources)
+    get_para(cached_sources)
         .into_iter()
         .for_each(|(url, res)| match res {
-            FetchResult::Success(content) => {
+            Outcome::Success(content) => {
                 cacher.set_lossy(url, &content);
             }
-            FetchResult::TransientError => {}
-            FetchResult::PermanentError => {
+            Outcome::TransientError => {}
+            Outcome::PermanentError => {
                 cacher.set_lossy(url, "# a non-transient error occurred");
             }
         });

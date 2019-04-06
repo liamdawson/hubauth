@@ -6,6 +6,8 @@
   * [x] Subcommands shown if no subcommand
   * [x] Help works
   * [x] Version works
+* [ ] Networking
+  * [ ] Test TLS validation
 * [ ] Init
   * [ ] Username validation
   * [ ] Handles a file which is already configured

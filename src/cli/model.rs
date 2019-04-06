@@ -1,5 +1,5 @@
 use gumdrop::Options;
-use std::str::{FromStr};
+use std::str::FromStr;
 use std::string::ToString;
 
 const USERNAME_VALIDATION_FAILED_MESSAGE: &str = "Usernames should be a maximum of 31 characters, start with an underscore or lowercase letter, and contain only lowercase letters, numerals, underscores or periods.";

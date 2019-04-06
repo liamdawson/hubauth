@@ -10,30 +10,30 @@ const DEFAULT_MAXIMUM_AGE: u64 = 60 * 60 * 24 * 30;
 
 #[derive(Debug, Deserialize)]
 pub struct Configuration {
-    pub caching: Option<CachingConfiguration>,
-    pub users: HashMap<String, UserConfiguration>,
+    pub caching: Option<CachingRaw>,
+    pub users: HashMap<String, UserRaw>,
 }
 
 #[derive(Debug, Deserialize)]
-pub struct CachingConfiguration {
+pub struct CachingRaw {
     pub destination: Option<String>,
     pub minimum_age: Option<u64>,
     pub maximum_age: Option<u64>,
 }
 
 #[derive(Debug, Deserialize)]
-pub struct UserConfiguration {
+pub struct UserRaw {
     pub cache: Option<bool>,
-    pub key_sources: Vec<UserKeySourceConfiguration>,
+    pub key_sources: Vec<UserKeySourceRaw>,
 }
 
 #[derive(Debug, Deserialize)]
-pub struct UserKeySourceConfiguration {
+pub struct UserKeySourceRaw {
     pub url: Option<String>,
     pub github: Option<String>,
 }
 
-impl Into<User> for UserConfiguration {
+impl Into<User> for UserRaw {
     fn into(self) -> User {
         User {
             cache: self.cache.unwrap_or(true),
@@ -54,7 +54,7 @@ impl Into<User> for UserConfiguration {
     }
 }
 
-impl Into<Caching> for CachingConfiguration {
+impl Into<Caching> for CachingRaw {
     fn into(self) -> Caching {
         Caching {
             destination: self
