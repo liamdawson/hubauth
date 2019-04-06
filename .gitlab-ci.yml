@@ -1,0 +1,5 @@
+image: rust
+# check the size of a release build
+script:
+- cargo build --release
+- wc -c target/release/hubauth
