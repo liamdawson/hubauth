@@ -116,10 +116,4 @@ mod tests {
             request_mock.assert();
         }
     }
-
-    // TODO: test to ensure proper paralellism, when possible?
-    // see: https://github.com/lipanski/mockito/issues/64#issuecomment-474682193
-    //
-    // though it should be fine if nothing weird is going on:
-    // https://github.com/rayon-rs/rayon/issues/551
 }

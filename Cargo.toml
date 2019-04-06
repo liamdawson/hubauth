@@ -20,7 +20,7 @@ retry = "0.4.0"
 rayon = "1.0.3"
 nom = "4.2.3"
 gumdrop = { git = "https://github.com/murarth/gumdrop.git", rev = "121667e873e8e9b5fed3d0f180978e59ac899bc9" }
-chttp = { git = "https://github.com/liamdawson/chttp.git", default-features = false, features = ["http2"] }
+chttp = { version = "0.4.2", default-features = false, features = ["http2"] }
 
 [dev-dependencies]
 mockito = "0.17.0"
