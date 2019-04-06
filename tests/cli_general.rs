@@ -1,12 +1,5 @@
-use assert_cmd::prelude::*;
-use predicates::prelude::*;
-use std::process::Command;
-
-const PKG_NAME: &str = "hubauth";
-
-fn subject() -> Command {
-    Command::cargo_bin(PKG_NAME).unwrap()
-}
+mod cli_helper;
+use cli_helper::*;
 
 #[test]
 fn cli_explains_issue_when_run_with_no_subcommand() {
