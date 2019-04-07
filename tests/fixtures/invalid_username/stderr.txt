@@ -1,0 +1,1 @@
+: invalid argument to option `free`: Usernames should be a maximum of 31 characters, start with an underscore or lowercase letter, and contain only lowercase letters, numerals, underscores or periods.

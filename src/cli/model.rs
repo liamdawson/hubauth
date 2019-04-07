@@ -50,7 +50,7 @@ pub struct FetchOpts {
     pub config: Option<String>,
     #[options(help = "Path to the cache directory (takes precedence)")]
     pub cache_dir: Option<String>,
-    #[options(free, help = "Username to lookup to find key sources")]
+    #[options(free, help = "Username to lookup to find key sources", parse(try_from_str = "parse_username"))]
     pub username: String,
 }
 
@@ -68,7 +68,7 @@ pub struct CachedOpts {
     pub config: Option<String>,
     #[options(help = "Path to the cache directory (takes precedence)")]
     pub cache_dir: Option<String>,
-    #[options(free, help = "Username to lookup to find key sources")]
+    #[options(free, help = "Username to lookup to find key sources", parse(try_from_str = "parse_username"))]
     pub username: String,
 }
 
@@ -78,7 +78,7 @@ pub struct ListOpts {
     pub config: Option<String>,
     #[options(help = "Path to the cache directory (takes precedence)")]
     pub cache_dir: Option<String>,
-    #[options(free, help = "Username to lookup to find key sources")]
+    #[options(free, help = "Username to lookup to find key sources", parse(try_from_str = "parse_username"))]
     pub username: String,
 }
 

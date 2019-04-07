@@ -10,3 +10,19 @@ pub const EXAMPLE_SSH_KEY: &str = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCve8gcx
 pub fn subject() -> Command {
     Command::cargo_bin(PKG_NAME).unwrap()
 }
+
+pub fn fixture(subdir: &str, name: &str) -> std::path::PathBuf {
+    std::env::current_dir().expect("could not obtain working directory").join("tests").join("fixtures").join(subdir).join(name)
+}
+
+pub fn fixture_str(subdir: &str, name: &str) -> String {
+    std::fs::read_to_string(fixture(subdir, name)).expect("could not read fixture file")
+}
+
+pub fn matches_fixture(subdir: &str, name: &str) -> predicates::str::DifferencePredicate {
+    predicates::str::similar(fixture_str(subdir, name))
+}
+
+pub fn ends_fixture(subdir: &str, name: &str) -> predicates::str::EndsWithPredicate {
+    predicates::str::ends_with(fixture_str(subdir, name))
+}
