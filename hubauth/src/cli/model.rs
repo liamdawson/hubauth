@@ -3,6 +3,7 @@
 use gumdrop::Options;
 use std::str::FromStr;
 use std::string::ToString;
+use unix_username::validate_username;
 
 const USERNAME_VALIDATION_FAILED_MESSAGE: &str = "Usernames should be a maximum of 31 characters, start with an underscore or lowercase letter, and contain only lowercase letters, numerals, underscores or periods.";
 const USERNAME_REGEX_PATTERN: &str = "^[a-z_][a-z0-9_.]{0,30}$";
