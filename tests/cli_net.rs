@@ -1,62 +1,40 @@
 mod cli_helper;
 use cli_helper::*;
-use std::io::Write;
 
-fn single_user_config(username: &str, key_source: &str) -> Vec<u8> {
-    (format!(
-        "---\nusers:\n  {}:\n    key_sources:\n    - {}\n",
-        username, key_source
-    ))
-    .as_bytes()
-    .to_vec()
+fn fixtures_dir() -> std::path::PathBuf {
+    std::env::current_dir().expect("could not obtain working directory").join("tests").join("fixtures")
+}
+
+fn simple_url_fixture(file: &str) -> String {
+    fixtures_dir().join("simple_url_config").join(file).to_str().expect("unable to get fixture path").to_owned()
+}
+
+fn matches_file(path: &str) -> predicates::str::DifferencePredicate {
+    predicates::str::similar(std::fs::read_to_string(path).expect("could not load file matching fixture"))
 }
 
 #[test]
 pub fn cli_loads_from_http_source() {
-    let key_mock = mockito::mock("GET", "/user.keys")
+    let key_mock = mockito::mock("GET", "/test_user.keys")
         .expect(1)
         .with_body(EXAMPLE_SSH_KEY)
         .create();
 
-    let mock_url = format!("{}/user.keys", mockito::server_url());
-    let mock_key_source = format!("url: {}", mock_url);
-    let config_bytes = single_user_config("test", &mock_key_source);
-    let config_file = tempfile::Builder::default()
-        .suffix(".yml")
-        .tempfile()
-        .expect("could not create temporary config file for test");
-    config_file
-        .as_file()
-        .write_all(config_bytes.as_slice())
-        .expect("could not write to temporary config file for test");
-
-    let path = config_file.path();
+    let config_file_path = simple_url_fixture("hubauth.yml");
+    let stdout_fixture = simple_url_fixture("stdout.txt");
+    let stderr_fixture = simple_url_fixture("stderr.txt");
 
     subject()
         .args(&[
             "fetch",
             "--config",
-            &path
-                .to_str()
-                .expect("invalid config path for temp variable"),
-            "test",
+            &config_file_path,
+            "test_user",
         ])
         .assert()
         .code(0)
-        .stdout(predicates::str::similar(format!(
-            "# keys for {}:\n\n# {}\n{}\n",
-            "test", mock_url, EXAMPLE_SSH_KEY
-        )));
+        .stdout(matches_file(&stdout_fixture))
+        .stderr(matches_file(&stderr_fixture));
 
     key_mock.assert();
-}
-
-#[test]
-pub fn cli_loads_from_valid_tls_source() {
-    // TODO
-}
-
-#[test]
-pub fn cli_fails_to_load_from_invalid_tls_source() {
-    // TODO
 }

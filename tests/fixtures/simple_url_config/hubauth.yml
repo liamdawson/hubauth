@@ -1,0 +1,6 @@
+---
+users:
+  test_user:
+    cache: no
+    key_sources:
+    - url: http://127.0.0.1:1234/test_user.keys
