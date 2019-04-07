@@ -1,4 +1,4 @@
-use chttp::{Client, Error, Options, Response};
+use chttp::{Client, Error, Options, Response, RedirectPolicy};
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use retry::retry;
 use std::time::Duration;
@@ -31,6 +31,7 @@ fn try_fetch(url: &str, timeout: u64) -> Result<Response, Error> {
     let mut options = Options::default();
 
     options.timeout = Some(Duration::from_millis(timeout));
+    options.redirect_policy = RedirectPolicy::Limit(3);
 
     let client = Client::builder().options(options).build()?;
 
@@ -83,6 +84,27 @@ mod tests {
 
         assert_eq!(Outcome::Success(String::from(test_string)), get(url));
 
+        request_mock.assert();
+    }
+
+    #[test]
+    fn it_follows_redirects() {
+        let test_string = "Strong as I can be!";
+
+        let url = &mockito::server_url();
+        let redirect_mock = mockito::mock("GET", "/")
+            .with_status(302)
+            .with_header("Location", "/real")
+            .create();
+
+        let request_mock = mockito::mock("GET", "/real")
+            .with_status(200)
+            .with_body(test_string)
+            .create();
+
+        assert_eq!(Outcome::Success(String::from(test_string)), get(url));
+
+        redirect_mock.assert();
         request_mock.assert();
     }
 

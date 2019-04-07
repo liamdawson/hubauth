@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 pub use assert_cmd::prelude::*;
 pub use predicates::prelude::*;
 pub use std::process::Command;
