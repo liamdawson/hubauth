@@ -1,5 +1,5 @@
 [workspace]
 members = [
     "hubauth",
-    "unix_username"
+    "ssh_pub_key"
 ]

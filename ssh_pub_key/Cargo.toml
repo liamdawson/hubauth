@@ -1,5 +1,8 @@
 [package]
-name = "unix_username"
+name = "ssh_pub_key"
 version = "0.1.0"
 authors = ["Liam Dawson <liam@ldaws.com>"]
 edition = "2018"
+
+[dependencies]
+nom = "4.2.3"

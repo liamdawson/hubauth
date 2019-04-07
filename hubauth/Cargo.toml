@@ -21,7 +21,7 @@ retry = "0.4.0"
 rayon = "1.0.3"
 sha2 = "0.8.0"
 serde = { version = "1.0.90", features = ["derive"] }
-unix_username = { path = "../unix_username" }
+ssh_pub_key = { path = "../ssh_pub_key" }
 
 [dev-dependencies]
 assert_cmd = "0.11.1"
