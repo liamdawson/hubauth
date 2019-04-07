@@ -12,7 +12,12 @@ pub fn subject() -> Command {
 }
 
 pub fn fixture(subdir: &str, name: &str) -> std::path::PathBuf {
-    std::env::current_dir().expect("could not obtain working directory").join("tests").join("fixtures").join(subdir).join(name)
+    std::env::current_dir()
+        .expect("could not obtain working directory")
+        .join("tests")
+        .join("fixtures")
+        .join(subdir)
+        .join(name)
 }
 
 pub fn fixture_str(subdir: &str, name: &str) -> String {

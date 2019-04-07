@@ -1,13 +1,13 @@
 test-cli:
-    cargo test cli -- --test-threads=8
+    cargo test --all cli -- --test-threads=8
 
 pr: pr-fmt pr-test pr-clippy
 
 pr-test:
-    cargo test
+    cargo test --all
 
 pr-fmt:
-    cargo fmt
+    cargo fmt --all
 
 pr-clippy:
-    cargo clippy -- -D clippy::pedantic -D clippy::nursery
+    cargo clippy --all -- -D clippy::pedantic -D clippy::nursery

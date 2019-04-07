@@ -1,4 +1,4 @@
-use chttp::{Client, Error, Options, Response, RedirectPolicy};
+use chttp::{Client, Error, Options, RedirectPolicy, Response};
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use retry::retry;
 use std::time::Duration;

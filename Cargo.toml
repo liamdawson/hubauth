@@ -1,4 +1,5 @@
 [workspace]
 members = [
-    "hubauth"
+    "hubauth",
+    "nom_unix_username"
 ]
