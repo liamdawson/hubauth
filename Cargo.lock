@@ -229,6 +229,11 @@ dependencies = [
 ]
 
 [[package]]
+name = "data-encoding"
+version = "2.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
 name = "difference"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1017,7 +1022,7 @@ dependencies = [
 name = "ssh_pub_key"
 version = "0.1.0"
 dependencies = [
- "nom 4.2.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "data-encoding 2.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -1191,6 +1196,7 @@ dependencies = [
 "checksum crossbeam-utils 0.6.5 (registry+https://github.com/rust-lang/crates.io-index)" = "f8306fcef4a7b563b76b7dd949ca48f52bc1141aa067d2ea09565f3e2652aa5c"
 "checksum curl 0.4.20 (registry+https://github.com/rust-lang/crates.io-index)" = "bed4741d1d4e1fc1ba6786c1313057c609259785cde2c45e34602acc45fd6ccc"
 "checksum curl-sys 0.4.17 (registry+https://github.com/rust-lang/crates.io-index)" = "7b8d8e51964f58c8053337fcef48e1c4608c7ee70c6f2e457674a97dda5a5828"
+"checksum data-encoding 2.1.2 (registry+https://github.com/rust-lang/crates.io-index)" = "f4f47ca1860a761136924ddd2422ba77b2ea54fe8cc75b9040804a0d9d32ad97"
 "checksum difference 2.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "524cbf6897b527295dff137cec09ecf3a05f4fddffd7dfcd1585403449e74198"
 "checksum digest 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)" = "05f47366984d3ad862010e22c7ce81a7dbcaebbdfb37241a620f8b6596ee135c"
 "checksum dir-diff 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)" = "1cce6e50ca36311e494793f7629014dc78cd963ba85cd05968ae06a63b867f0b"
