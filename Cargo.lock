@@ -465,7 +465,7 @@ dependencies = [
  "retry 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.90 (registry+https://github.com/rust-lang/crates.io-index)",
  "sha2 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "ssh_pub_key 0.1.0",
+ "ssh_authorized_keys 0.1.0",
  "tempfile 3.0.7 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -1019,7 +1019,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "ssh_pub_key"
+name = "ssh_authorized_keys"
 version = "0.1.0"
 dependencies = [
  "data-encoding 2.1.2 (registry+https://github.com/rust-lang/crates.io-index)",

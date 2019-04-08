@@ -1,5 +1,5 @@
 [package]
-name = "ssh_pub_key"
+name = "ssh_authorized_keys"
 version = "0.1.0"
 authors = ["Liam Dawson <liam@ldaws.com>"]
 edition = "2018"

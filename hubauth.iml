@@ -15,7 +15,12 @@
       <sourceFolder url="file://$MODULE_DIR$/ssh_pub_key/examples" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ssh_pub_key/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/ssh_pub_key/benches" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/ssh_authorized_keys/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ssh_authorized_keys/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ssh_authorized_keys/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/ssh_authorized_keys/benches" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/hubauth/target" />
+      <excludeFolder url="file://$MODULE_DIR$/ssh_authorized_keys/target" />
       <excludeFolder url="file://$MODULE_DIR$/ssh_pub_key/target" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
