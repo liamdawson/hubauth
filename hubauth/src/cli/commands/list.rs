@@ -4,7 +4,7 @@ use hubauth::fetch::{get, Outcome};
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 
 pub fn call(opts: ListOpts) {
-    let configuration = get_config(opts.config, opts.cache_dir);
+    let configuration = get_config(&opts.config, opts.cache_dir);
     let cacher = configuration.get_cacher();
 
     if let Some(user) = configuration.users.get(&opts.username) {

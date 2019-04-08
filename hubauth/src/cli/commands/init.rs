@@ -1,4 +1,4 @@
-use crate::cli::constants::{default_sshd_config, default_username};
+use crate::cli::constants::{cache_user, sshd_config_path};
 use crate::cli::model::{InitOptCommand, InitOpts};
 use std::borrow::Cow;
 
@@ -12,9 +12,9 @@ pub fn bin_path() -> String {
 
 pub fn call(opts: InitOpts) {
     match inner(
-        &opts.sshd_config.unwrap_or_else(default_sshd_config),
+        &opts.sshd_config.unwrap_or_else(sshd_config_path),
         &opts.command.unwrap_or(InitOptCommand::List).to_string(),
-        &opts.username.unwrap_or_else(default_username),
+        &opts.username.unwrap_or_else(cache_user),
         !opts.no_backup,
     ) {
         Ok(msg) => eprintln!("{}", msg),

@@ -3,7 +3,7 @@ use crate::cli::model::FetchOpts;
 use hubauth::fetch::{get_para, Outcome};
 
 pub fn call(opts: FetchOpts) {
-    let configuration = get_config(opts.config, opts.cache_dir);
+    let configuration = get_config(&opts.config, opts.cache_dir);
 
     if let Some(user) = configuration.users.get(&opts.username) {
         let results = get_para(user.source_urls_refs())

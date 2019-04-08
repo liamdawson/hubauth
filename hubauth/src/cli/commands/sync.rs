@@ -3,7 +3,7 @@ use crate::cli::SyncOpts;
 use hubauth::fetch::{get_para, Outcome};
 
 pub fn call(opts: SyncOpts) {
-    let configuration = get_config(opts.config, opts.cache_dir);
+    let configuration = get_config(&opts.config, opts.cache_dir);
     let cacher = configuration.get_cacher();
 
     let mut cached_sources: Vec<_> = configuration

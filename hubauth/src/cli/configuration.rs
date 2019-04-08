@@ -1,4 +1,4 @@
-use super::constants::default_cache;
+use super::constants::cache_path;
 use hubauth::models::*;
 use std::collections::HashMap;
 use std::iter::FromIterator;
@@ -57,7 +57,7 @@ impl Into<User> for UserRaw {
 impl Into<Caching> for CachingRaw {
     fn into(self) -> Caching {
         Caching {
-            destination: self.destination.unwrap_or_else(default_cache),
+            destination: self.destination.unwrap_or_else(cache_path),
             min_age: self.minimum_age.unwrap_or(DEFAULT_MINIMUM_AGE),
             max_age: self.maximum_age.unwrap_or(DEFAULT_MAXIMUM_AGE),
         }
@@ -66,7 +66,7 @@ impl Into<Caching> for CachingRaw {
 
 pub fn default_caching() -> Caching {
     Caching {
-        destination: default_cache(),
+        destination: cache_path(),
         min_age: DEFAULT_MINIMUM_AGE,
         max_age: DEFAULT_MAXIMUM_AGE,
     }

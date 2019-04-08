@@ -1,5 +1,6 @@
 #![allow(clippy::default_trait_access)]
 
+use super::constants::config_path;
 use gumdrop::Options;
 use std::str::FromStr;
 use std::string::ToString;
@@ -46,8 +47,8 @@ pub enum CliCommands {
 
 #[derive(Options)]
 pub struct FetchOpts {
-    #[options(help = "Path to the config file")]
-    pub config: Option<String>,
+    #[options(help = "Path to the config file", default_expr = "config_path()")]
+    pub config: String,
     #[options(help = "Path to the cache directory (takes precedence)")]
     pub cache_dir: Option<String>,
     #[options(
@@ -60,16 +61,16 @@ pub struct FetchOpts {
 
 #[derive(Options)]
 pub struct SyncOpts {
-    #[options(help = "Path to the config file")]
-    pub config: Option<String>,
+    #[options(help = "Path to the config file", default_expr = "config_path()")]
+    pub config: String,
     #[options(help = "Path to the cache directory (takes precedence)")]
     pub cache_dir: Option<String>,
 }
 
 #[derive(Options)]
 pub struct CachedOpts {
-    #[options(help = "Path to the config file")]
-    pub config: Option<String>,
+    #[options(help = "Path to the config file", default_expr = "config_path()")]
+    pub config: String,
     #[options(help = "Path to the cache directory (takes precedence)")]
     pub cache_dir: Option<String>,
     #[options(
@@ -82,8 +83,8 @@ pub struct CachedOpts {
 
 #[derive(Options)]
 pub struct ListOpts {
-    #[options(help = "Path to the config file")]
-    pub config: Option<String>,
+    #[options(help = "Path to the config file", default_expr = "config_path()")]
+    pub config: String,
     #[options(help = "Path to the cache directory (takes precedence)")]
     pub cache_dir: Option<String>,
     #[options(

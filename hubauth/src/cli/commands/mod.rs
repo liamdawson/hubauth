@@ -5,7 +5,7 @@ pub mod list;
 pub mod sync;
 
 use super::configuration::Configuration;
-use super::constants::{default_config, EXIT_CONFIGURATION_ERROR, EXIT_INVOCATION_ERROR};
+use super::constants::{EXIT_CONFIGURATION_ERROR, EXIT_INVOCATION_ERROR};
 use super::model::{Call, CliCommands, CliOptions};
 use config::{Config, File};
 use gumdrop::Options;
@@ -41,9 +41,9 @@ impl Call for CliCommands {
     }
 }
 
-fn get_config(config_path: Option<String>, cache_directory: Option<String>) -> State {
+fn get_config(config_path: &str, cache_directory: Option<String>) -> State {
     let mut config = Config::new();
-    if let Err(err) = config.merge(File::with_name(&config_path.unwrap_or_else(default_config))) {
+    if let Err(err) = config.merge(File::with_name(config_path)) {
         eprintln!("config error: {:?}", err);
         std::process::exit(EXIT_CONFIGURATION_ERROR);
     }

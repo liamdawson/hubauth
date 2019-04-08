@@ -2,7 +2,7 @@ use super::get_config;
 use crate::cli::model::CachedOpts;
 
 pub fn call(opts: CachedOpts) {
-    let configuration = get_config(opts.config, opts.cache_dir);
+    let configuration = get_config(&opts.config, opts.cache_dir);
 
     if let Some(user) = configuration.users.get(&opts.username) {
         let result = if user.cache {
