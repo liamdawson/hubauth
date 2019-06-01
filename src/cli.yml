@@ -1,0 +1,15 @@
+name: hubauth
+author: Liam Dawson <liam@ldaws.com>
+about: fetch and record authorized keys from remote sources
+args:
+subcommands:
+  - fetch:
+      about: Fetch keys for the named user
+  - sync:
+      about: Fetch keys for all known users
+  - saved:
+      about: List recorded keys for the named user
+  - list:
+      about: Fetch or reuse keys for the named user
+  - init:
+      about: Create a basic configuration file
